@@ -1,0 +1,13 @@
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    compile "org.mybatis:mybatis:$mybatisVersion"
+    compile "org.springframework.data:spring-data-commons:$springdataVersion"
+    compile "org.springframework:spring-context:$springVersion"
+
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+
+    compile project (':se-domain-common')
+    compile project (':se-protocol-common')
+}
