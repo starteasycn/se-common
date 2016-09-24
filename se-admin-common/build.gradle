@@ -2,5 +2,6 @@
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compile "com.alibaba:fastjson:$fastjsonVersion"
+    compile project (':se-web-common')
+    compile project (':se-biz-common')
 }
