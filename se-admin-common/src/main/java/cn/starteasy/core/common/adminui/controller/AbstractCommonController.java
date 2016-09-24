@@ -5,9 +5,11 @@ import cn.starteasy.core.common.adminui.backend.service.IResourceGridService;
 import cn.starteasy.core.common.adminui.controller.helpers.ActionPermHelper;
 import cn.starteasy.core.common.adminui.controller.helpers.BasePersistenceProviderMaps;
 import cn.starteasy.core.common.adminui.controller.helpers.BaseServiceMaps;
+import cn.starteasy.core.common.adminui.controller.helpers.ValidatorUtil;
 import cn.starteasy.core.common.domain.BaseDomain;
 import cn.starteasy.core.common.domain.BizStatusEnum;
 import cn.starteasy.core.common.domain.persistent.SqlOrderEnum;
+import cn.starteasy.core.common.domain.persistent.utils.SorterBuilder;
 import cn.starteasy.core.common.exception.BizException;
 import cn.starteasy.core.common.exception.BizExceptionEnum;
 import cn.starteasy.core.common.service.IBaseService;
@@ -148,7 +150,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
         //2.执行通用校验
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("moduleName", mainObj);
-        List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, "orderNum", SqlOrderEnum.ASC.getAction());
+        List<ResourceGrid> resourceGridList = resourceGridService.viewList(null, condition, SorterBuilder.sorterList("orderNum", SqlOrderEnum.ASC));
 
         String editRules = null;
         Map<String, Object> rules = null;
@@ -271,12 +273,12 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
             if(isEdit){ //编辑
                 conditions.put("id", dataMap.get("id"));
 
-                List existObjList = getServiceMaps().get(mainObj).queryList(conditions, null, null);
+                List existObjList = getServiceMaps().get(mainObj).viewList(null, conditions, null);
                 if(existObjList != null && existObjList.size() > 1){
                     throw new BizException(BizExceptionEnum.EXISTS.getCode(), existRules + BizExceptionEnum.EXISTS.getDesc());
                 }
             } else {
-                Object existObj = getServiceMaps().get(mainObj).queryOne(conditions);
+                Object existObj = getServiceMaps().get(mainObj).viewOne(null, conditions, null);
                 if(existObj != null){
                     throw new BizException(BizExceptionEnum.EXISTS.getCode(), existRules + BizExceptionEnum.EXISTS.getDesc());
                 }
@@ -331,55 +333,55 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
     @RequestMapping(value="/import/{mainObj}")
     @ResponseBody
     public String doImport(@RequestParam("file") MultipartFile file, @PathVariable String mainObj){
-        Map<String, Object> dataMap = Maps.newHashMap();
-        String prop = null;
-        Enumeration<String> names = request.getParameterNames();
-        while(names.hasMoreElements()){
-            prop = names.nextElement();
-            dataMap.put(prop, request.getParameter(prop));
-        }
-        //daoMaps.get(mainObj).updateMap(dataMap);
-
-        if (!file.isEmpty()) {
-            try {
-                String originalFilename = file.getOriginalFilename();
-                // 文件保存路径
-                // FIXME
-                // 避免使用request session
-                String filePath = request.getSession().getServletContext().getRealPath("/") + "/upload/"
-                        + originalFilename;
-                // 转存文件
-                file.transferTo(new File(filePath));
-
-                if(originalFilename.endsWith("xls")){
-                    //Map<String, Object> datas =  OldExcelUtil;
-
-                    //daoMaps.get(mainObj).insert();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                ImportParams params = new ImportParams();
-                params.setTitleRows(2);
-                params.setHeadRows(2);
-                //params.setSheetNum(9);
-                params.setNeedSave(true);
-
-//                long start = new Date().getTime();
-                List<T> lists = ExcelImportUtil.importExcelByIs(file.getInputStream()
-                , getGenericType(0), params);
-
-                for(T t : lists) {
-                    //getServiceMaps().get(mainObj).insert((BaseDomain) t);
-
-                    getPersistenceProviderMaps().get(getServiceMaps(), mainObj).create((BaseDomain) t);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        Map<String, Object> dataMap = Maps.newHashMap();
+//        String prop = null;
+//        Enumeration<String> names = request.getParameterNames();
+//        while(names.hasMoreElements()){
+//            prop = names.nextElement();
+//            dataMap.put(prop, request.getParameter(prop));
+//        }
+//        //daoMaps.get(mainObj).updateMap(dataMap);
+//
+//        if (!file.isEmpty()) {
+//            try {
+//                String originalFilename = file.getOriginalFilename();
+//                // 文件保存路径
+//                // FIXME
+//                // 避免使用request session
+//                String filePath = request.getSession().getServletContext().getRealPath("/") + "/upload/"
+//                        + originalFilename;
+//                // 转存文件
+//                file.transferTo(new File(filePath));
+//
+//                if(originalFilename.endsWith("xls")){
+//                    //Map<String, Object> datas =  OldExcelUtil;
+//
+//                    //daoMaps.get(mainObj).insert();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                ImportParams params = new ImportParams();
+//                params.setTitleRows(2);
+//                params.setHeadRows(2);
+//                //params.setSheetNum(9);
+//                params.setNeedSave(true);
+//
+////                long start = new Date().getTime();
+//                List<T> lists = ExcelImportUtil.importExcelByIs(file.getInputStream()
+//                , getGenericType(0), params);
+//
+//                for(T t : lists) {
+//                    //getServiceMaps().get(mainObj).insert((BaseDomain) t);
+//
+//                    getPersistenceProviderMaps().get(getServiceMaps(), mainObj).create((BaseDomain) t);
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         return "true";
     }
@@ -403,38 +405,38 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
     @RequestMapping(value="/export/{mainObj}")
     @ResponseBody
     public String doExport(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String uri = request.getRequestURI().substring(0, request.getRequestURI().length() - 1);
-        String title = request.getParameter("fileName");
-        //post 中文支持 仅支持 tomcat容器
-        title = new String(title.getBytes("ISO-8859-1"), "utf-8");
-        //获取参数
-        Map<String, Object> conditions = makeQueryCondition(request, response, uri);
-
-        List<T> expertUserDetails = getExportService().queryPage(conditions, 0, Integer.MAX_VALUE);
-        OutputStream out = null;
-        try {
-            response.setContentType("application/x-msdownload");
-            out = new BufferedOutputStream(response.getOutputStream());
-            //解决中文乱码
-            response.setHeader("Content-Disposition", "attachment;filename="+new String((title + ".xls").getBytes("utf-8"),"ISO-8859-1"));
-            response.setContentType("application/octet-stream");
-
-            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(null, title),
-                    getGenericType(0), expertUserDetails);
-
-            workbook.write(out);
-//            OutputStream out= response.getOutputStream();
-//           ex.exportExcel("专家信息",headers, expertUserExcelBeans, out,"yyyy-MM-dd");
-
-        }catch(Exception e){
-            //日志打印错误
-            logger.error("导出数据失败", e);
-        }finally{
-            if(out!=null) {
-                out.flush();
-                out.close();
-            }
-        }
+//        String uri = request.getRequestURI().substring(0, request.getRequestURI().length() - 1);
+//        String title = request.getParameter("fileName");
+//        //post 中文支持 仅支持 tomcat容器
+//        title = new String(title.getBytes("ISO-8859-1"), "utf-8");
+//        //获取参数
+//        Map<String, Object> conditions = makeQueryCondition(request, response, uri);
+//
+//        List<T> expertUserDetails = getExportService().queryPage(conditions, 0, Integer.MAX_VALUE);
+//        OutputStream out = null;
+//        try {
+//            response.setContentType("application/x-msdownload");
+//            out = new BufferedOutputStream(response.getOutputStream());
+//            //解决中文乱码
+//            response.setHeader("Content-Disposition", "attachment;filename="+new String((title + ".xls").getBytes("utf-8"),"ISO-8859-1"));
+//            response.setContentType("application/octet-stream");
+//
+//            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(null, title),
+//                    getGenericType(0), expertUserDetails);
+//
+//            workbook.write(out);
+////            OutputStream out= response.getOutputStream();
+////           ex.exportExcel("专家信息",headers, expertUserExcelBeans, out,"yyyy-MM-dd");
+//
+//        }catch(Exception e){
+//            //日志打印错误
+//            logger.error("导出数据失败", e);
+//        }finally{
+//            if(out!=null) {
+//                out.flush();
+//                out.close();
+//            }
+//        }
         return null;
 
     }
