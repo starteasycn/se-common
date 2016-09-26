@@ -4,11 +4,52 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
     compile "org.springframework.boot:spring-boot-starter-web:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-actuator:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-autoconfigure:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-loader-tools:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-starter-logging:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-starter-aop:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-starter-security:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-starter-web:$springbootVersion"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf:$springbootVersion"
+
+    compile ("org.springframework:spring-context-support:$springVersion") {
+        exclude(module: 'quartz')
+    }
+    compile "org.springframework.security:spring-security-config:${spring_security_version}"
+    compile "org.springframework.security:spring-security-data:${spring_security_version}"
+    compile "org.springframework.security:spring-security-web:${spring_security_version}"
+
+    compile("io.springfox:springfox-swagger2:${springfox_version}"){
+        exclude module: 'mapstruct'
+    }
 
     compile "cz.jirutka.spring:spring-rest-exception-handler:$exceptionHandleVersion"
+
+
+    compile "io.dropwizard.metrics:metrics-core"
+    compile "io.dropwizard.metrics:metrics-annotation:${dropwizard_metrics_version}"
+    compile "io.dropwizard.metrics:metrics-ehcache:${dropwizard_metrics_version}"
+    compile "io.dropwizard.metrics:metrics-graphite:${dropwizard_metrics_version}"
+    compile "io.dropwizard.metrics:metrics-healthchecks:${dropwizard_metrics_version}"
+    compile "io.dropwizard.metrics:metrics-jvm:${dropwizard_metrics_version}"
+    compile "io.dropwizard.metrics:metrics-servlet:${dropwizard_metrics_version}"
+    compile "io.dropwizard.metrics:metrics-json:${dropwizard_metrics_version}"
+    compile ("io.dropwizard.metrics:metrics-servlets:${dropwizard_metrics_version}") {
+        exclude(module: 'metrics-healthchecks')
+    }
+
+    compile("net.logstash.logback:logstash-logback-encoder:${logstash_logback_encoder_version}") {
+        exclude(module: 'ch.qos.logback')
+    }
+
+    compile ("com.ryantenney.metrics:metrics-spring:${metrics_spring_version}") {
+        exclude(module: 'metrics-core')
+        exclude(module: 'metrics-healthchecks')
+    }
+    compile "fr.ippon.spark.metrics:metrics-spark-reporter:${metrics_spark_reporter_version}"
 
     compile project (':se-context')
     compile project (':se-protocol-common')
 
 }
-ToStringBuilder

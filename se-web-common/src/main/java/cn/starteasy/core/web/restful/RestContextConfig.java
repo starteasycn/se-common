@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by qyang on 14/10/29.
  */
-@EnableWebMvc
+//@EnableWebMvc
 @Configuration
 public class RestContextConfig extends WebMvcConfigurerAdapter {
     @Override

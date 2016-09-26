@@ -4,4 +4,6 @@ include 'se-protocol-common'
 include 'se-context'
 include 'se-admin-common'
 include 'se-web-common'
+include 'admin-war-demo'
+include 'admin-service-demo'
 

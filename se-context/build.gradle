@@ -4,4 +4,6 @@ dependencies {
 
     compile "com.google.guava:guava:$guavaVersion"
     compile "org.apache.commons:commons-lang3:$commonsVersion"
+
+    compile "javax.inject:javax.inject:${javax_inject_version}"
 }

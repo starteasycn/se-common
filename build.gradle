@@ -138,9 +138,9 @@ subprojects {
     }
 
     /** 有时候会报错，但需要执行 */
-    task createREADME(){
-        file("README.md").createNewFile()
-    }
+//    task createREADME(){
+//        file("README.md").createNewFile()
+//    }
 
     configurations {
         provided
@@ -152,5 +152,17 @@ subprojects {
         all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 }
+
+configure(subprojects.findAll { it.name.contains('war') }) {
+    apply plugin: 'war'
+
+    task createWebProject(dependsOn: 'createJavaProject') << {
+        def webAppDir = file("$webAppDirName")
+        webAppDir.mkdirs()
+    }
+}
+
+
+
 
 
