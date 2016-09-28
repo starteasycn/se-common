@@ -55,7 +55,8 @@ public class ActionPermHelper {
 
 
     public final List<Resource> getResourcePerm(String product) {
-        return getResourcePerm(UserContext.getCurrentUser().getId(), product,"0");
+        //return getResourcePerm(UserContext.getCurrentUser().getId(), product,"0");
+        return getResourcePerm(0, product,"0");
     }
 
     public final List<Resource> getResourcePerm(Object uid, String product) {

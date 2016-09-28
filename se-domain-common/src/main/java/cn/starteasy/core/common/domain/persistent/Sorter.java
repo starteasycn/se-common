@@ -17,4 +17,12 @@ public class Sorter {
         this.field = field;
         this.order = sqlOrderEnum.getAction();
     }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getOrder() {
+        return order;
+    }
 }

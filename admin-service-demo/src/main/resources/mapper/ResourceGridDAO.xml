@@ -527,52 +527,52 @@ selectList
         FROM mubs_resource_grid
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="id!=null">
-                AND id = #{id}
+                AND id = #{condition.id}
             </if>
             <if test="creator!=null">
-                AND creator = #{creator}
+                AND creator = #{condition.creator}
             </if>
             <if test="createDate!=null">
-                AND createDate = #{createDate}
+                AND createDate = #{condition.createDate}
             </if>
             <if test="lastModifier!=null">
-                AND lastModifier = #{lastModifier}
+                AND lastModifier = #{condition.lastModifier}
             </if>
             <if test="lastModDate!=null">
-                AND lastModDate = #{lastModDate}
+                AND lastModDate = #{condition.lastModDate}
             </if>
             <if test="status!=null">
-                AND status = #{status}
+                AND status = #{condition.status}
             </if>
             <if test="resId!=null">
-                AND resId = #{resId}
+                AND resId = #{condition.resId}
             </if>
             <if test="displayName!=null">
-                AND displayName = #{displayName}
+                AND displayName = #{condition.displayName}
             </if>
             <if test="colId!=null">
-                AND colId = #{colId}
+                AND colId = #{condition.colId}
             </if>
             <if test="orderNum!=null">
-                AND orderNum = #{orderNum}
+                AND orderNum = #{condition.orderNum}
             </if>
             <if test="width!=null">
-                AND width = #{width}
+                AND width = #{condition.width}
             </if>
             <if test="editoptions!=null">
-                AND editoptions = #{editoptions}
+                AND editoptions = #{condition.editoptions}
             </if>
             <if test="edittype!=null">
-                AND edittype = #{edittype}
+                AND edittype = #{condition.edittype}
             </if>
             <if test="unformat!=null">
-                AND unformat = #{unformat}
+                AND unformat = #{condition.unformat}
             </if>
             <if test="description!=null">
-                AND description = #{description}
+                AND description = #{condition.description}
             </if>
             <if test="moduleName!=null">
-                AND moduleName = #{moduleName}
+                AND moduleName = #{condition.moduleName}
             </if>
         </trim>
         ORDER BY orderNum

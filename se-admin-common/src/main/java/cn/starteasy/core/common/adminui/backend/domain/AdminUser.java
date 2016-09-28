@@ -9,14 +9,16 @@
 
 package cn.starteasy.core.common.adminui.backend.domain;
 
-import cn.starteasy.core.common.domain.CreateBaseDomain;
 import cn.starteasy.core.common.domain.UserDomain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class User extends UserDomain<Long> {
+/**
+ * 后台系统的专有模型
+ */
+public class AdminUser extends UserDomain<Long> {
 	//是否管理员
     private Integer isAdmin;
 	//权限
@@ -29,6 +31,8 @@ public class User extends UserDomain<Long> {
 	private String realName;
 	//电子邮件
 	private String email;
+	//等同于 name
+	private String login;
 
 
 	//扩展字段可以添加想要的个性化属性
@@ -42,7 +46,7 @@ public class User extends UserDomain<Long> {
 		this.object = object;
 	}
 
-	public User(){
+	public AdminUser(){
 	}
 
 
@@ -93,9 +97,9 @@ public class User extends UserDomain<Long> {
 	}
 	
 	public boolean equals(Object obj) {
-		if(obj instanceof User == false) return false;
+		if(obj instanceof AdminUser == false) return false;
 		if(this == obj) return true;
-		User other = (User)obj;
+		AdminUser other = (AdminUser)obj;
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();
@@ -107,6 +111,14 @@ public class User extends UserDomain<Long> {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getRealName() {

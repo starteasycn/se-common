@@ -5,7 +5,7 @@ import cn.starteasy.core.common.domain.view.admin.SearchField;
 import cn.starteasy.core.common.domain.view.admin.SearchFilter;
 import cn.starteasy.core.common.service.admin.IDataPermAware;
 import cn.starteasy.core.common.service.admin.IDataPermService;
-import cn.starteasy.core.common.utils.SearchEnum;
+import cn.starteasy.core.common.domain.persistent.SearchEnum;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -64,7 +64,7 @@ public abstract class AbstractController implements IDataPermAware {
                         field.setData("%"+ String.valueOf(field.getData()).trim()+"%");
                     if(field.getOp().equals(SearchEnum.alk.getCode()))
                         field.setData(String.valueOf(field.getData()).trim()+"%");
-                    field.setOp(SearchEnum.codeOf(field.getOp()).getDes());
+                    field.setOp(SearchEnum.codeOf(field.getOp()).getValue());
                     conditions.put(getField(field.getField()), field);
                 }
             }
