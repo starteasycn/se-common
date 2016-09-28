@@ -21,33 +21,6 @@ import java.util.Map;
 public interface IBaseDAO<ID extends Serializable, T extends BaseDomain<ID>> extends IDAO<T, ID>, CrudRepository<T, ID> {
     //------------------------------ spring-data CrudRepository START ---------------------------//
 
-    /*
-	 * 默认只支持 $MAXLIMIT(默认1000条) 条
-	 * @see org.springframework.data.repository.CrudRepository#findAll()
-	 */
-    List<T> findAll();
-
-    /*
-     * 默认只支持 $MAXLIMIT(默认1000条) 条
-     * @see org.springframework.data.repository.PagingAndSortingRepository#findAll(org.springframework.data.domain.Sort)
-     */
-    List<T> findAll(@Param("sorter")List<Sorter> sorter);
-
-    /*
-     * TODO 1: 对ids大小做限制,保证性能&防止sql超长
-     * TODO 2: 从cache获取所有返回的数据
-     * @see org.springframework.data.repository.CrudRepository#findAll(java.lang.Iterable)
-     */
-    List<T> findAll(Iterable<ID> ids);
-
-    /*
-     * (non-Javadoc)
-     * @see org.springframework.data.repository.CrudRepository#save(java.lang.Iterable)
-     */
-    <S extends T> List<S> save(Iterable<S> entities);
-
-    //------------------------------ spring-data CrudRepository END ---------------------------//
-
     //------------------------------ C START ---------------------------//
     /**
      * 保存单一对象  如果采用集中式的ID生成,传入的entity ID属性有值;如果使用数据库的自增ID,传入的entity ID属性无值
@@ -63,36 +36,15 @@ public interface IBaseDAO<ID extends Serializable, T extends BaseDomain<ID>> ext
      * @param entityMap
      */
     public ID insertMap(@Param("map") Map<String, Object> entityMap);
+
+
+    /*
+     * (non-Javadoc)
+     * @see org.springframework.data.repository.CrudRepository#save(java.lang.Iterable)
+     */
+    <S extends T> List<S> save(Iterable<S> entities);
+
     //------------------------------ C END ---------------------------//
-
-    //------------------------------ R START ---------------------------//
-
-    /** 根据ID\IDS获取 对象见 父接口定义 */
-
-    /**
-     * 根据条件集合进行指定类型单一对象查询  无论条件获取到的是几条 都用 limit 1 限制返回只有一条
-     *
-     * @param selector 需要查询的字段, null的话查询该表的所有字段
-     * @param condition
-     *            进行查询的条件集合
-     * @return 返回泛型参数类型的对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}，
-     */
-    public T queryOne(@Param("selector") Map<String, Object> selector, @Param("condition") Map<String, Object> condition, @Param("sorter")List<Sorter> sorter);
-    public T queryOneByWhereSql(@Param("selector") Map<String, Object> selector, @Param("nativeSql") String nativeSql, @Param("sorter")List<Sorter> sorter);
-
-    public List<T> queryList(@Param("selector") Map<String, Object> selector, @Param("condition") Map<String, Object> condition, @Param("sorter")List<Sorter> sorter);
-    public List<T> queryListByWhereSql(@Param("selector") Map<String, Object> selector, @Param("nativeSql") String nativeSql, @Param("sorter")List<Sorter> sorter);
-
-
-    /**
-     * 根据原生sql查询获取返回的值[模型动态化]
-     * @return
-     */
-    public List<Map> queryBySql(@Param("executeSql") String executeSql);
-
-    public Long queryBySqlCount(@Param("executeSqlCount") String executeSql);
-
-    //------------------------------ R END ---------------------------//
 
     //------------------------------ U START ---------------------------//
     /**
@@ -135,15 +87,58 @@ public interface IBaseDAO<ID extends Serializable, T extends BaseDomain<ID>> ext
     public int updateNull(T entity);
     //------------------------------ U END ---------------------------//
 
-    //------------------------------ D START ---------------------------//
+
+    //------------------------------ R START ---------------------------//
+
+    /** 根据ID\IDS获取 对象见 父接口定义 */
+
     /**
-     * 根据条件集合删除对象
+     * 根据条件集合进行指定类型单一对象查询  无论条件获取到的是几条 都用 limit 1 限制返回只有一条
      *
+     * @param selector 需要查询的字段, null的话查询该表的所有字段
      * @param condition
+     *            进行查询的条件集合
+     * @return 返回泛型参数类型的对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}，
      */
-    public int deleteByCondition(@Param("condition")Map<String, Object> condition);
-    public int deleteByWhereSql(@Param("nativeSql") String nativeSql);
-    //------------------------------ D END ---------------------------//
+    public T queryOne(@Param("selector") Map<String, Object> selector, @Param("condition") Map<String, Object> condition, @Param("sorter")List<Sorter> sorter);
+    public T queryOneByWhereSql(@Param("selector") Map<String, Object> selector, @Param("nativeSql") String nativeSql, @Param("sorter")List<Sorter> sorter);
+
+    public List<T> queryList(@Param("selector") Map<String, Object> selector, @Param("condition") Map<String, Object> condition, @Param("sorter")List<Sorter> sorter);
+    public List<T> queryListByWhereSql(@Param("selector") Map<String, Object> selector, @Param("nativeSql") String nativeSql, @Param("sorter")List<Sorter> sorter);
+
+
+    /**
+     * 根据原生sql查询获取返回的值[模型动态化]
+     * @return
+     */
+    public List<Map> queryBySql(@Param("executeSql") String executeSql);
+
+    public Long queryBySqlCount(@Param("executeSqlCount") String executeSql);
+
+
+
+    /*
+	 * 默认只支持 $MAXLIMIT(默认1000条) 条
+	 * @see org.springframework.data.repository.CrudRepository#findAll()
+	 */
+    List<T> findAll();
+
+    /*
+     * 默认只支持 $MAXLIMIT(默认1000条) 条
+     * @see org.springframework.data.repository.PagingAndSortingRepository#findAll(org.springframework.data.domain.Sort)
+     */
+    List<T> findAll(@Param("sorter")List<Sorter> sorter);
+
+    /*
+     * TODO 1: 对ids大小做限制,保证性能&防止sql超长
+     * TODO 2: 从cache获取所有返回的数据
+     * @see org.springframework.data.repository.CrudRepository#findAll(java.lang.Iterable)
+     */
+    List<T> findAll(Iterable<ID> ids);
+
+    //------------------------------ R END ---------------------------//
+
+
 
     //------------------------------  pagination END ---------------------------//
     /**
@@ -156,7 +151,7 @@ public interface IBaseDAO<ID extends Serializable, T extends BaseDomain<ID>> ext
     public List<T> queryPage(@Param("selector") Map<String, Object> selector, @Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows,
                              @Param("sorter") List<Sorter> sorter);
     public List<T> queryPageByWhereSql(@Param("selector") Map<String, Object> selector, @Param("nativeSql") String nativeSql, @Param("offset") int offset, @Param("rows") int rows,
-                             @Param("sorter") List<Sorter> sorter);
+                                       @Param("sorter") List<Sorter> sorter);
 
     /**
      * 根据条件进行数量的查询   和 queryPage 配套使用; 也可独立使用
@@ -169,6 +164,19 @@ public interface IBaseDAO<ID extends Serializable, T extends BaseDomain<ID>> ext
     //------------------------------  pagination END ---------------------------//
 
 
+
+    //------------------------------ D START ---------------------------//
+    /**
+     * 根据条件集合删除对象
+     *
+     * @param condition
+     */
+    public int deleteByCondition(@Param("condition")Map<String, Object> condition);
+    public int deleteByWhereSql(@Param("nativeSql") String nativeSql);
+    //------------------------------ D END ---------------------------//
+
+
+    //------------------------------ spring-data CrudRepository END ---------------------------//
     /**
      * 取得泛型类型
      *
