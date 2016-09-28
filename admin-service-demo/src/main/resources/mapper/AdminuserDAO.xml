@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.starteasy.core.common.adminui.backend.dao.IAdminUserDAO">
+
+
+
+<!--
+C
+insert
+insertMap
+R
+findOne
+findAll
+exists
+queryOne
+queryOneByWhereSql
+queryList
+queryListByWhereSql
+queryBySql
+queryBySqlCount
+U
+D
+-->
+
+    <!-- 插入 -->
+    <sql id="Base_Column_List">
+        id as id ,
+        login as login ,
+        password as password ,
+        creator as creator ,
+        createDate as createDate ,
+        lastModifier as lastModifier ,
+        lastModDate as lastModDate ,
+        status as status ,
+        phone as phone ,
+        email as email 
+    </sql>
+    <insert id="insert" parameterType="Adminuser">
+        INSERT INTO mubs_adminuser (
+        login,
+        password,
+        creator,
+        createDate,
+        lastModifier,
+        lastModDate,
+        status,
+        phone,
+        email
+        ) VALUES (
+        #{login},
+        #{password},
+        #{creator},
+        #{createDate},
+        #{lastModifier},
+        #{lastModDate},
+        #{status},
+        #{phone},
+        #{email}
+        )
+            <selectKey resultType="java.lang.Integer" keyProperty="id">
+                SELECT LAST_INSERT_ID() AS ID
+            </selectKey>
+    </insert>
+
+
+    <insert id="insertMap" >
+        INSERT INTO mubs_adminuser (
+        login,
+        password,
+        creator,
+        createDate,
+        lastModifier,
+        lastModDate,
+        status,
+        phone,
+        email
+                ) VALUES (
+        #{map.login},
+        #{map.password},
+        #{map.creator},
+        #{map.createDate},
+        #{map.lastModifier},
+        #{map.lastModDate},
+        #{map.status},
+        #{map.phone},
+        #{map.email}
+                )
+    </insert>
+
+    <!-- 查询 -->
+    <select id="queryList" resultType="Adminuser">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.login!=null">
+                    , login as name
+                </if>
+                <if test="selector.password!=null">
+                    , password
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.status!=null">
+                    , status
+                </if>
+                <if test="selector.phone!=null">
+                    , phone
+                </if>
+                <if test="selector.email!=null">
+                    , email
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+
+        FROM mubs_adminuser
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+
+            <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}            </if>
+            <if test="condition.id.op=='like'">
+                AND id like CONCAT('%', #{condition.id} , '%')
+            </if>
+            <if test="condition.id.op=='leftlike'">
+                AND id like CONCAT(#{condition.id} , '%')
+            </if>
+            <if test="condition.id.op=='in'">
+                <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.login!=null">
+
+            <if test="condition.login.op!='in' and condition.login.op!='like' and condition.login.op!='leftlike'">
+                ${condition.groupOp}   ${condition.login.field}  ${condition.login.op} #{condition.login.data}            </if>
+            <if test="condition.login.op=='like'">
+                AND login like CONCAT('%', #{condition.login.data} , '%')
+            </if>
+            <if test="condition.login.op=='leftlike'">
+                AND login like CONCAT(#{condition.login.data} , '%')
+            </if>
+            <if test="condition.login.op=='in'">
+                 ${condition.groupOp}   ${condition.login.field}  ${condition.login.op}
+                <foreach collection="condition.login.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.password!=null">
+            ${condition.groupOp}   ${condition.password.field}  ${condition.password.op}
+            <if test="condition.password.op!='in' and condition.password.op!='like' and condition.password.op!='leftlike'">
+#{condition.password.data}            </if>
+            <if test="condition.password.op=='like'">
+                AND password like CONCAT('%', #{condition.password} , '%')
+            </if>
+            <if test="condition.password.op=='leftlike'">
+                AND password like CONCAT(#{condition.password} , '%')
+            </if>
+            <if test="condition.password.op=='in'">
+                <foreach collection="condition.password.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.creator!=null">
+            ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}
+            <if test="condition.creator.op!='in' and condition.creator.op!='like' and condition.creator.op!='leftlike'">
+#{condition.creator.data}            </if>
+            <if test="condition.creator.op=='like'">
+                AND creator like CONCAT('%', #{condition.creator} , '%')
+            </if>
+            <if test="condition.creator.op=='leftlike'">
+                AND creator like CONCAT(#{condition.creator} , '%')
+            </if>
+            <if test="condition.creator.op=='in'">
+                <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.createDate!=null">
+            ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}
+            <if test="condition.createDate.op!='in' and condition.createDate.op!='like' and condition.createDate.op!='leftlike'">
+#{condition.createDate.data}            </if>
+            <if test="condition.createDate.op=='like'">
+                AND createDate like CONCAT('%', #{condition.createDate} , '%')
+            </if>
+            <if test="condition.createDate.op=='leftlike'">
+                AND createDate like CONCAT(#{condition.createDate} , '%')
+            </if>
+            <if test="condition.createDate.op=='in'">
+                <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModifier!=null">
+            ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}
+            <if test="condition.lastModifier.op!='in' and condition.lastModifier.op!='like' and condition.lastModifier.op!='leftlike'">
+#{condition.lastModifier.data}            </if>
+            <if test="condition.lastModifier.op=='like'">
+                AND lastModifier like CONCAT('%', #{condition.lastModifier} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='leftlike'">
+                AND lastModifier like CONCAT(#{condition.lastModifier} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='in'">
+                <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModDate!=null">
+            ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}
+            <if test="condition.lastModDate.op!='in' and condition.lastModDate.op!='like' and condition.lastModDate.op!='leftlike'">
+#{condition.lastModDate.data}            </if>
+            <if test="condition.lastModDate.op=='like'">
+                AND lastModDate like CONCAT('%', #{condition.lastModDate} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='leftlike'">
+                AND lastModDate like CONCAT(#{condition.lastModDate} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='in'">
+                <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.status!=null">
+            ${condition.groupOp}   ${condition.status.field}  ${condition.status.op}
+            <if test="condition.status.op!='in' and condition.status.op!='like' and condition.status.op!='leftlike'">
+#{condition.status.data}            </if>
+            <if test="condition.status.op=='like'">
+                AND status like CONCAT('%', #{condition.status} , '%')
+            </if>
+            <if test="condition.status.op=='leftlike'">
+                AND status like CONCAT(#{condition.status} , '%')
+            </if>
+            <if test="condition.status.op=='in'">
+                <foreach collection="condition.status.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.phone!=null">
+            ${condition.groupOp}   ${condition.phone.field}  ${condition.phone.op}
+            <if test="condition.phone.op!='in' and condition.phone.op!='like' and condition.phone.op!='leftlike'">
+#{condition.phone.data}            </if>
+            <if test="condition.phone.op=='like'">
+                AND phone like CONCAT('%', #{condition.phone} , '%')
+            </if>
+            <if test="condition.phone.op=='leftlike'">
+                AND phone like CONCAT(#{condition.phone} , '%')
+            </if>
+            <if test="condition.phone.op=='in'">
+                <foreach collection="condition.phone.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.email!=null">
+            ${condition.groupOp}   ${condition.email.field}  ${condition.email.op}
+            <if test="condition.email.op!='in' and condition.email.op!='like' and condition.email.op!='leftlike'">
+#{condition.email.data}            </if>
+            <if test="condition.email.op=='like'">
+                AND email like CONCAT('%', #{condition.email} , '%')
+            </if>
+            <if test="condition.email.op=='leftlike'">
+                AND email like CONCAT(#{condition.email} , '%')
+            </if>
+            <if test="condition.email.op=='in'">
+                <foreach collection="condition.email.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        </trim>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+

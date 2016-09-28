@@ -40,9 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     private Http401UnauthorizedEntryPoint authenticationEntryPoint;
 
-//    @Inject
-//    private UserDetailsService userDetailsService;
-//
+    @Inject
+    private UserDetailsService userDetailsService;
+
 //    @Inject
 //    private RememberMeServices rememberMeServices;
 
@@ -53,9 +53,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-////            .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder());
+        auth
+            .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -80,11 +80,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .exceptionHandling()
             .accessDeniedHandler(new CustomAccessDeniedHandler())
 //            .authenticationEntryPoint(authenticationEntryPoint)
-        .and()
-            .rememberMe()
+//        .and()
+//            .rememberMe()
 //            .rememberMeServices(rememberMeServices)
-            .rememberMeParameter("remember-me")
-            .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
+//            .rememberMeParameter("remember-me")
+//            .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
         .and()
             .formLogin()
             .loginPage("/login")

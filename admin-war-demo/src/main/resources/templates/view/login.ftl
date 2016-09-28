@@ -298,26 +298,48 @@
 			jQuery(function($) {
              $('#loginBtn').on('click', function(e){
 
-                 var data = 'username=' +  encodeURIComponent($('#Username').val()) + '&password=' +
-                         encodeURIComponent($('#Password').val()) + '&grant_type=password&scope=read%20write&' +
-                         'client_secret=seuaaapp&client_id=seuaaapp';
+                 var data = 'j_username=' + encodeURIComponent($('#Username').val()) +
+                         '&j_password=' + encodeURIComponent($('#Password').val()) +
+                         '&remember-me=true&submit=Login';
 
-                 return $.ajax({url:'http://localhost:9999/oauth/token?' + data,
-					            type: 'post',
-//                                dataType:'JSONP',
-                                headers: {
-									 'Content-Type': 'application/x-www-form-urlencoded',
-									 'Accept': 'application/json',
-									 'Authorization': 'Basic ' + encode('seuaaapp' + ':' + 'seuaaapp')
-								 },
-                                success:function authSucess (response) {
-                                    var expiredAt = new Date();
-                                    expiredAt.setSeconds(expiredAt.getSeconds() + response.expires_in);
-                                    response.expires_at = expiredAt.getTime();
-                                    localStorage.setItem("authenticationToken", response);
-                                    return response;
-                                }
+                 return $.ajax({url:'api/authentication' + data,
+                     type: 'post',
+                     headers: {
+                         'Content-Type': 'application/x-www-form-urlencoded'
+                     },
+                     success:function authSucess (response) {
+                         var expiredAt = new Date();
+                         expiredAt.setSeconds(expiredAt.getSeconds() + response.expires_in);
+                         response.expires_at = expiredAt.getTime();
+                         localStorage.setItem("authenticationToken", response);
+
+                         window.location.href="/api/test";
+                         return response;
+                     }
                  });
+
+//                 var data = 'username=' +  encodeURIComponent($('#Username').val()) + '&password=' +
+//                         encodeURIComponent($('#Password').val()) + '&grant_type=password&scope=read%20write&' +
+//                         'client_secret=seuaaapp&client_id=seuaaapp';
+//
+//                 return $.ajax({url:'http://localhost:9999/oauth/token?' + data,
+//					            type: 'post',
+////                                dataType:'JSONP',
+//                                headers: {
+//									 'Content-Type': 'application/x-www-form-urlencoded',
+//									 'Accept': 'application/json',
+//									 'Authorization': 'Basic ' + encode('seuaaapp' + ':' + 'seuaaapp')
+//								 },
+//                                success:function authSucess (response) {
+//                                    var expiredAt = new Date();
+//                                    expiredAt.setSeconds(expiredAt.getSeconds() + response.expires_in);
+//                                    response.expires_at = expiredAt.getTime();
+//                                    localStorage.setItem("authenticationToken", response);
+//
+//                                    window.location.href="/api/test";
+//                                    return response;
+//                                }
+//                 });
 
 
 

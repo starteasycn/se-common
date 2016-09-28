@@ -1,23 +1,23 @@
-package cn.starteasy.core.common.utils;
+package cn.starteasy.core.common.domain.persistent;
 
 
 /**
  * 搜索枚举
- * @author xjli
+ * @author qyang
  *
  */
 public enum SearchEnum {
-
+	/** like 全模糊; alk 左匹配 */
 	eq("eq", "="), ne("ne", "!="), lt("lt", "<"), le("le", "<="), gt("gt", ">"), ge(
-			"ge", ">="),lk("lk","like"),alk("alk","like"),in("in","in");
+			"ge", ">="),lk("lk","like"),alk("alk","leftlike"),in("in","in");
 
 	private String code;
 
-	private String des;
+	private String value;
 
-	private SearchEnum(String code, String des) {
+	private SearchEnum(String code, String value) {
 		this.code = code;
-		this.des = des;
+		this.value = value;
 	}
 
 	/**
@@ -57,12 +57,12 @@ public enum SearchEnum {
 		this.code = code;
 	}
 
-	public String getDes() {
-		return des;
+	public String getValue() {
+		return value;
 	}
 
-	public void setDes(String des) {
-		this.des = des;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 }
