@@ -15,11 +15,28 @@ import java.util.Map;
  * @since v0.0.1
  */
 public class ConditionBuilder {
+    private Map<String, Object> conditions;
+
+    public ConditionBuilder(){
+        conditions = Maps.newHashMap();
+    }
+
     public static Map<String, Object> condition(String field, SearchEnum op, Object data){
         Map<String, Object> conditions = Maps.newHashMap();
         SearchField searchField = new SearchField(field, op.getValue(), data);
         conditions.put(field, searchField);
 
+        return conditions;
+    }
+
+    public ConditionBuilder and(String field, SearchEnum op, Object data){
+        SearchField searchField = new SearchField(field, op.getValue(), data);
+        conditions.put(field, searchField);
+
+        return this;
+    }
+
+    public Map<String, Object> build(){
         return conditions;
     }
 }

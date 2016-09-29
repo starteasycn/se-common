@@ -1,17 +1,13 @@
 package cn.starteasy.core.common.adminui.backend.domain;
 
 import cn.starteasy.core.common.domain.BaseDomain;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonGetter;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
-public class AdminPersistentToken extends BaseDomain<Long> {
+public class AdminUserToken extends BaseDomain<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,7 +19,7 @@ public class AdminPersistentToken extends BaseDomain<Long> {
 
     private String tokenValue;
 
-    private LocalDate tokenDate;
+    private long tokenDate;
 
     //an IPV6 address max length is 39 characters
     private String ipAddress;
@@ -50,18 +46,14 @@ public class AdminPersistentToken extends BaseDomain<Long> {
         this.tokenValue = tokenValue;
     }
 
-    public LocalDate getTokenDate() {
+    public long getTokenDate() {
         return tokenDate;
     }
 
-    public void setTokenDate(LocalDate tokenDate) {
+    public void setTokenDate(long tokenDate) {
         this.tokenDate = tokenDate;
     }
 
-    @JsonGetter
-    public String getFormattedTokenDate() {
-        return DATE_TIME_FORMATTER.format(this.tokenDate);
-    }
 
     public String getIpAddress() {
         return ipAddress;
@@ -108,7 +100,7 @@ public class AdminPersistentToken extends BaseDomain<Long> {
             return false;
         }
 
-        AdminPersistentToken that = (AdminPersistentToken) o;
+        AdminUserToken that = (AdminUserToken) o;
 
         if (!series.equals(that.series)) {
             return false;

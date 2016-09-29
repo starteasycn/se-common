@@ -1,0 +1,1142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.starteasy.cloud.demo.dao.IAdminUserTokenDAO">
+
+
+
+<!--
+C
+insert
+insertMap
+R
+findOne
+findAll
+exists
+queryOne
+queryOneByWhereSql
+queryList
+queryListByWhereSql
+queryBySql
+queryBySqlCount
+U
+D
+-->
+
+
+    <sql id="Base_Column_List">
+        id as id ,
+        series as series ,
+        tokenValue as tokenValue ,
+        tokenDate as tokenDate ,
+        ipAddress as ipAddress ,
+        userAgent as userAgent ,
+        userId as userId ,
+        userLogin as userLogin 
+    </sql>
+
+    <!-- 插入 start-->
+
+    <insert id="insert" parameterType="AdminUserToken">
+        INSERT INTO mubs_adminusertoken (
+        series,
+        tokenValue,
+        tokenDate,
+        ipAddress,
+        userAgent,
+        userId,
+        userLogin
+        ) VALUES (
+        #{series},
+        #{tokenValue},
+        #{tokenDate},
+        #{ipAddress},
+        #{userAgent},
+        #{userId},
+        #{userLogin}
+        )
+            <selectKey resultType="java.lang.Integer" keyProperty="id">
+                SELECT LAST_INSERT_ID() AS ID
+            </selectKey>
+    </insert>
+
+
+    <insert id="insertMap" >
+        INSERT INTO mubs_adminusertoken (
+        series,
+        tokenValue,
+        tokenDate,
+        ipAddress,
+        userAgent,
+        userId,
+        userLogin
+                ) VALUES (
+        #{map.series},
+        #{map.tokenValue},
+        #{map.tokenDate},
+        #{map.ipAddress},
+        #{map.userAgent},
+        #{map.userId},
+        #{map.userLogin}
+                )
+    </insert>
+
+
+    <!-- 插入 end-->
+
+    <!-- 修改 start-->
+        <!-- 更新 -->
+        <update id="update" parameterType="AdminUserToken">
+        UPDATE mubs_adminusertoken
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="series!=null">
+                series = #{series},
+            </if>
+            <if test="tokenValue!=null">
+                tokenValue = #{tokenValue},
+            </if>
+            <if test="tokenDate!=null">
+                tokenDate = #{tokenDate},
+            </if>
+            <if test="ipAddress!=null">
+                ipAddress = #{ipAddress},
+            </if>
+            <if test="userAgent!=null">
+                userAgent = #{userAgent},
+            </if>
+            <if test="userId!=null">
+                userId = #{userId},
+            </if>
+            <if test="userLogin!=null">
+                userLogin = #{userLogin},
+            </if>
+        </trim>
+                WHERE
+        id = #{id}
+        </update>
+
+        <update id="updateMap">
+        UPDATE mubs_adminusertoken
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="map.series!=null">
+                series = #{map.series},
+            </if>
+            <if test="map.tokenValue!=null">
+                tokenValue = #{map.tokenValue},
+            </if>
+            <if test="map.tokenDate!=null">
+                tokenDate = #{map.tokenDate},
+            </if>
+            <if test="map.ipAddress!=null">
+                ipAddress = #{map.ipAddress},
+            </if>
+            <if test="map.userAgent!=null">
+                userAgent = #{map.userAgent},
+            </if>
+            <if test="map.userId!=null">
+                userId = #{map.userId},
+            </if>
+            <if test="map.userLogin!=null">
+                userLogin = #{map.userLogin},
+            </if>
+        </trim>
+        WHERE
+        id = #{map.id}
+        </update>
+
+        <update id="updateByCondition">
+        UPDATE mubs_adminusertoken
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.series!=null">
+                series = #{update.series},
+            </if>
+            <if test="update.tokenValue!=null">
+                tokenValue = #{update.tokenValue},
+            </if>
+            <if test="update.tokenDate!=null">
+                tokenDate = #{update.tokenDate},
+            </if>
+            <if test="update.ipAddress!=null">
+                ipAddress = #{update.ipAddress},
+            </if>
+            <if test="update.userAgent!=null">
+                userAgent = #{update.userAgent},
+            </if>
+            <if test="update.userId!=null">
+                userId = #{update.userId},
+            </if>
+            <if test="update.userLogin!=null">
+                userLogin = #{update.userLogin},
+            </if>
+        </trim>
+
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+            AND id = #{condition.id}
+        </if>
+        <if test="condition.series!=null">
+            AND series = #{condition.series}
+        </if>
+        <if test="condition.tokenValue!=null">
+            AND tokenValue = #{condition.tokenValue}
+        </if>
+        <if test="condition.tokenDate!=null">
+            AND tokenDate = #{condition.tokenDate}
+        </if>
+        <if test="condition.ipAddress!=null">
+            AND ipAddress = #{condition.ipAddress}
+        </if>
+        <if test="condition.userAgent!=null">
+            AND userAgent = #{condition.userAgent}
+        </if>
+        <if test="condition.userId!=null">
+            AND userId = #{condition.userId}
+        </if>
+        <if test="condition.userLogin!=null">
+            AND userLogin = #{condition.userLogin}
+        </if>
+        </trim>
+        </update>
+
+        <update id="updateByWhereSql">
+        UPDATE mubs_adminusertoken
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.series!=null">
+                series = #{update.series},
+            </if>
+            <if test="update.tokenValue!=null">
+                tokenValue = #{update.tokenValue},
+            </if>
+            <if test="update.tokenDate!=null">
+                tokenDate = #{update.tokenDate},
+            </if>
+            <if test="update.ipAddress!=null">
+                ipAddress = #{update.ipAddress},
+            </if>
+            <if test="update.userAgent!=null">
+                userAgent = #{update.userAgent},
+            </if>
+            <if test="update.userId!=null">
+                userId = #{update.userId},
+            </if>
+            <if test="update.userLogin!=null">
+                userLogin = #{update.userLogin},
+            </if>
+        </trim>
+
+
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+        </update>
+
+
+
+        <update id="updateNull" parameterType="AdminUserToken">
+        UPDATE mubs_adminusertoken
+        <trim prefix="SET" suffixOverrides=",">
+            series = #{series},
+            tokenValue = #{tokenValue},
+            tokenDate = #{tokenDate},
+            ipAddress = #{ipAddress},
+            userAgent = #{userAgent},
+            userId = #{userId},
+            userLogin = #{userLogin},
+        </trim>
+                WHERE
+        id = #{id} 
+        </update>
+    <!-- 修改 end-->
+
+    <!-- 读取数据 start-->
+        <select id="findOne" parameterType="java.lang.Integer" resultType="AdminUserToken">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM mubs_adminusertoken
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        </select>
+
+        <select id="findAll" resultType="AdminUserToken">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM mubs_adminusertoken
+        </select>
+
+        <!-- 查询 -->
+        <select id="queryOne" resultType="AdminUserToken">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.series!=null">
+                    , series
+                </if>
+                <if test="selector.tokenValue!=null">
+                    , tokenValue
+                </if>
+                <if test="selector.tokenDate!=null">
+                    , tokenDate
+                </if>
+                <if test="selector.ipAddress!=null">
+                    , ipAddress
+                </if>
+                <if test="selector.userAgent!=null">
+                    , userAgent
+                </if>
+                <if test="selector.userId!=null">
+                    , userId
+                </if>
+                <if test="selector.userLogin!=null">
+                    , userLogin
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+
+                FROM mubs_adminusertoken
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+
+            <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
+            </if>
+            <if test="condition.id.op=='like'">
+                AND id like CONCAT('%', #{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='leftlike'">
+                AND id like CONCAT(#{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='in'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.series!=null">
+
+            <if test="condition.series.op!='in' and condition.series.op!='like' and condition.series.op!='leftlike'">
+                ${condition.groupOp}   ${condition.series.field}  ${condition.series.op} #{condition.series.data}
+            </if>
+            <if test="condition.series.op=='like'">
+                AND series like CONCAT('%', #{condition.series.data} , '%')
+            </if>
+            <if test="condition.series.op=='leftlike'">
+                AND series like CONCAT(#{condition.series.data} , '%')
+            </if>
+            <if test="condition.series.op=='in'">
+                ${condition.groupOp}   ${condition.series.field}  ${condition.series.op}
+                <foreach collection="condition.series.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.tokenValue!=null">
+
+            <if test="condition.tokenValue.op!='in' and condition.tokenValue.op!='like' and condition.tokenValue.op!='leftlike'">
+                ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op} #{condition.tokenValue.data}
+            </if>
+            <if test="condition.tokenValue.op=='like'">
+                AND tokenValue like CONCAT('%', #{condition.tokenValue.data} , '%')
+            </if>
+            <if test="condition.tokenValue.op=='leftlike'">
+                AND tokenValue like CONCAT(#{condition.tokenValue.data} , '%')
+            </if>
+            <if test="condition.tokenValue.op=='in'">
+                ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op}
+                <foreach collection="condition.tokenValue.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.tokenDate!=null">
+
+            <if test="condition.tokenDate.op!='in' and condition.tokenDate.op!='like' and condition.tokenDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op} #{condition.tokenDate.data}
+            </if>
+            <if test="condition.tokenDate.op=='like'">
+                AND tokenDate like CONCAT('%', #{condition.tokenDate.data} , '%')
+            </if>
+            <if test="condition.tokenDate.op=='leftlike'">
+                AND tokenDate like CONCAT(#{condition.tokenDate.data} , '%')
+            </if>
+            <if test="condition.tokenDate.op=='in'">
+                ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op}
+                <foreach collection="condition.tokenDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.ipAddress!=null">
+
+            <if test="condition.ipAddress.op!='in' and condition.ipAddress.op!='like' and condition.ipAddress.op!='leftlike'">
+                ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op} #{condition.ipAddress.data}
+            </if>
+            <if test="condition.ipAddress.op=='like'">
+                AND ipAddress like CONCAT('%', #{condition.ipAddress.data} , '%')
+            </if>
+            <if test="condition.ipAddress.op=='leftlike'">
+                AND ipAddress like CONCAT(#{condition.ipAddress.data} , '%')
+            </if>
+            <if test="condition.ipAddress.op=='in'">
+                ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op}
+                <foreach collection="condition.ipAddress.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userAgent!=null">
+
+            <if test="condition.userAgent.op!='in' and condition.userAgent.op!='like' and condition.userAgent.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op} #{condition.userAgent.data}
+            </if>
+            <if test="condition.userAgent.op=='like'">
+                AND userAgent like CONCAT('%', #{condition.userAgent.data} , '%')
+            </if>
+            <if test="condition.userAgent.op=='leftlike'">
+                AND userAgent like CONCAT(#{condition.userAgent.data} , '%')
+            </if>
+            <if test="condition.userAgent.op=='in'">
+                ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op}
+                <foreach collection="condition.userAgent.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userId!=null">
+
+            <if test="condition.userId.op!='in' and condition.userId.op!='like' and condition.userId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op} #{condition.userId.data}
+            </if>
+            <if test="condition.userId.op=='like'">
+                AND userId like CONCAT('%', #{condition.userId.data} , '%')
+            </if>
+            <if test="condition.userId.op=='leftlike'">
+                AND userId like CONCAT(#{condition.userId.data} , '%')
+            </if>
+            <if test="condition.userId.op=='in'">
+                ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op}
+                <foreach collection="condition.userId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userLogin!=null">
+
+            <if test="condition.userLogin.op!='in' and condition.userLogin.op!='like' and condition.userLogin.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op} #{condition.userLogin.data}
+            </if>
+            <if test="condition.userLogin.op=='like'">
+                AND userLogin like CONCAT('%', #{condition.userLogin.data} , '%')
+            </if>
+            <if test="condition.userLogin.op=='leftlike'">
+                AND userLogin like CONCAT(#{condition.userLogin.data} , '%')
+            </if>
+            <if test="condition.userLogin.op=='in'">
+                ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op}
+                <foreach collection="condition.userLogin.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+                </trim>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+        LIMIT 0,1
+        </select>
+
+        <!-- 查询 -->
+        <select id="queryOneByWhereSql" resultType="AdminUserToken">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.series!=null">
+                    , series
+                </if>
+                <if test="selector.tokenValue!=null">
+                    , tokenValue
+                </if>
+                <if test="selector.tokenDate!=null">
+                    , tokenDate
+                </if>
+                <if test="selector.ipAddress!=null">
+                    , ipAddress
+                </if>
+                <if test="selector.userAgent!=null">
+                    , userAgent
+                </if>
+                <if test="selector.userId!=null">
+                    , userId
+                </if>
+                <if test="selector.userLogin!=null">
+                    , userLogin
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+
+        FROM mubs_adminusertoken
+
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+        LIMIT 0,1
+        </select>
+
+        <!-- 查询 -->
+        <select id="queryList" resultType="AdminUserToken">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.series!=null">
+                    , series
+                </if>
+                <if test="selector.tokenValue!=null">
+                    , tokenValue
+                </if>
+                <if test="selector.tokenDate!=null">
+                    , tokenDate
+                </if>
+                <if test="selector.ipAddress!=null">
+                    , ipAddress
+                </if>
+                <if test="selector.userAgent!=null">
+                    , userAgent
+                </if>
+                <if test="selector.userId!=null">
+                    , userId
+                </if>
+                <if test="selector.userLogin!=null">
+                    , userLogin
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+
+        FROM mubs_adminusertoken
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+
+            <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
+            </if>
+            <if test="condition.id.op=='like'">
+                AND id like CONCAT('%', #{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='leftlike'">
+                AND id like CONCAT(#{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='in'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.series!=null">
+
+            <if test="condition.series.op!='in' and condition.series.op!='like' and condition.series.op!='leftlike'">
+                ${condition.groupOp}   ${condition.series.field}  ${condition.series.op} #{condition.series.data}
+            </if>
+            <if test="condition.series.op=='like'">
+                AND series like CONCAT('%', #{condition.series.data} , '%')
+            </if>
+            <if test="condition.series.op=='leftlike'">
+                AND series like CONCAT(#{condition.series.data} , '%')
+            </if>
+            <if test="condition.series.op=='in'">
+                ${condition.groupOp}   ${condition.series.field}  ${condition.series.op}
+                <foreach collection="condition.series.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.tokenValue!=null">
+
+            <if test="condition.tokenValue.op!='in' and condition.tokenValue.op!='like' and condition.tokenValue.op!='leftlike'">
+                ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op} #{condition.tokenValue.data}
+            </if>
+            <if test="condition.tokenValue.op=='like'">
+                AND tokenValue like CONCAT('%', #{condition.tokenValue.data} , '%')
+            </if>
+            <if test="condition.tokenValue.op=='leftlike'">
+                AND tokenValue like CONCAT(#{condition.tokenValue.data} , '%')
+            </if>
+            <if test="condition.tokenValue.op=='in'">
+                ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op}
+                <foreach collection="condition.tokenValue.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.tokenDate!=null">
+
+            <if test="condition.tokenDate.op!='in' and condition.tokenDate.op!='like' and condition.tokenDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op} #{condition.tokenDate.data}
+            </if>
+            <if test="condition.tokenDate.op=='like'">
+                AND tokenDate like CONCAT('%', #{condition.tokenDate.data} , '%')
+            </if>
+            <if test="condition.tokenDate.op=='leftlike'">
+                AND tokenDate like CONCAT(#{condition.tokenDate.data} , '%')
+            </if>
+            <if test="condition.tokenDate.op=='in'">
+                ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op}
+                <foreach collection="condition.tokenDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.ipAddress!=null">
+
+            <if test="condition.ipAddress.op!='in' and condition.ipAddress.op!='like' and condition.ipAddress.op!='leftlike'">
+                ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op} #{condition.ipAddress.data}
+            </if>
+            <if test="condition.ipAddress.op=='like'">
+                AND ipAddress like CONCAT('%', #{condition.ipAddress.data} , '%')
+            </if>
+            <if test="condition.ipAddress.op=='leftlike'">
+                AND ipAddress like CONCAT(#{condition.ipAddress.data} , '%')
+            </if>
+            <if test="condition.ipAddress.op=='in'">
+                ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op}
+                <foreach collection="condition.ipAddress.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userAgent!=null">
+
+            <if test="condition.userAgent.op!='in' and condition.userAgent.op!='like' and condition.userAgent.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op} #{condition.userAgent.data}
+            </if>
+            <if test="condition.userAgent.op=='like'">
+                AND userAgent like CONCAT('%', #{condition.userAgent.data} , '%')
+            </if>
+            <if test="condition.userAgent.op=='leftlike'">
+                AND userAgent like CONCAT(#{condition.userAgent.data} , '%')
+            </if>
+            <if test="condition.userAgent.op=='in'">
+                ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op}
+                <foreach collection="condition.userAgent.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userId!=null">
+
+            <if test="condition.userId.op!='in' and condition.userId.op!='like' and condition.userId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op} #{condition.userId.data}
+            </if>
+            <if test="condition.userId.op=='like'">
+                AND userId like CONCAT('%', #{condition.userId.data} , '%')
+            </if>
+            <if test="condition.userId.op=='leftlike'">
+                AND userId like CONCAT(#{condition.userId.data} , '%')
+            </if>
+            <if test="condition.userId.op=='in'">
+                ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op}
+                <foreach collection="condition.userId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userLogin!=null">
+
+            <if test="condition.userLogin.op!='in' and condition.userLogin.op!='like' and condition.userLogin.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op} #{condition.userLogin.data}
+            </if>
+            <if test="condition.userLogin.op=='like'">
+                AND userLogin like CONCAT('%', #{condition.userLogin.data} , '%')
+            </if>
+            <if test="condition.userLogin.op=='leftlike'">
+                AND userLogin like CONCAT(#{condition.userLogin.data} , '%')
+            </if>
+            <if test="condition.userLogin.op=='in'">
+                ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op}
+                <foreach collection="condition.userLogin.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        </trim>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+        </select>
+
+        <!-- 查询 -->
+        <select id="queryListByWhereSql" resultType="AdminUserToken">
+            SELECT
+            <if test="selector!=null">
+                <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.series!=null">
+                        , series
+                    </if>
+                    <if test="selector.tokenValue!=null">
+                        , tokenValue
+                    </if>
+                    <if test="selector.tokenDate!=null">
+                        , tokenDate
+                    </if>
+                    <if test="selector.ipAddress!=null">
+                        , ipAddress
+                    </if>
+                    <if test="selector.userAgent!=null">
+                        , userAgent
+                    </if>
+                    <if test="selector.userId!=null">
+                        , userId
+                    </if>
+                    <if test="selector.userLogin!=null">
+                        , userLogin
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
+
+        FROM mubs_adminusertoken
+
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+
+        <if test="sorter!=null" >
+            ORDER BY
+            <foreach collection="sorter" item="sort" separator="," >
+                ${sort.field} ${sort.order}</foreach>
+        </if>
+        </select>
+
+        <select id="queryBySql" resultType="Map">
+${executeSql}        </select>
+
+        <select id="queryBySqlCount" resultType="java.lang.Long">
+${executeSqlCount}        </select>
+
+    <!-- 读取数据 end-->
+
+    <!-- 分页数据 start-->
+
+        <select id="queryPage" resultType="AdminUserToken">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.series!=null">
+                    , series
+                </if>
+                <if test="selector.tokenValue!=null">
+                    , tokenValue
+                </if>
+                <if test="selector.tokenDate!=null">
+                    , tokenDate
+                </if>
+                <if test="selector.ipAddress!=null">
+                    , ipAddress
+                </if>
+                <if test="selector.userAgent!=null">
+                    , userAgent
+                </if>
+                <if test="selector.userId!=null">
+                    , userId
+                </if>
+                <if test="selector.userLogin!=null">
+                    , userLogin
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+                FROM mubs_adminusertoken
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+
+            <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
+            </if>
+            <if test="condition.id.op=='like'">
+                AND id like CONCAT('%', #{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='leftlike'">
+                AND id like CONCAT(#{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='in'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.series!=null">
+
+            <if test="condition.series.op!='in' and condition.series.op!='like' and condition.series.op!='leftlike'">
+                ${condition.groupOp}   ${condition.series.field}  ${condition.series.op} #{condition.series.data}
+            </if>
+            <if test="condition.series.op=='like'">
+                AND series like CONCAT('%', #{condition.series.data} , '%')
+            </if>
+            <if test="condition.series.op=='leftlike'">
+                AND series like CONCAT(#{condition.series.data} , '%')
+            </if>
+            <if test="condition.series.op=='in'">
+                ${condition.groupOp}   ${condition.series.field}  ${condition.series.op}
+                <foreach collection="condition.series.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.tokenValue!=null">
+
+            <if test="condition.tokenValue.op!='in' and condition.tokenValue.op!='like' and condition.tokenValue.op!='leftlike'">
+                ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op} #{condition.tokenValue.data}
+            </if>
+            <if test="condition.tokenValue.op=='like'">
+                AND tokenValue like CONCAT('%', #{condition.tokenValue.data} , '%')
+            </if>
+            <if test="condition.tokenValue.op=='leftlike'">
+                AND tokenValue like CONCAT(#{condition.tokenValue.data} , '%')
+            </if>
+            <if test="condition.tokenValue.op=='in'">
+                ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op}
+                <foreach collection="condition.tokenValue.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.tokenDate!=null">
+
+            <if test="condition.tokenDate.op!='in' and condition.tokenDate.op!='like' and condition.tokenDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op} #{condition.tokenDate.data}
+            </if>
+            <if test="condition.tokenDate.op=='like'">
+                AND tokenDate like CONCAT('%', #{condition.tokenDate.data} , '%')
+            </if>
+            <if test="condition.tokenDate.op=='leftlike'">
+                AND tokenDate like CONCAT(#{condition.tokenDate.data} , '%')
+            </if>
+            <if test="condition.tokenDate.op=='in'">
+                ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op}
+                <foreach collection="condition.tokenDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.ipAddress!=null">
+
+            <if test="condition.ipAddress.op!='in' and condition.ipAddress.op!='like' and condition.ipAddress.op!='leftlike'">
+                ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op} #{condition.ipAddress.data}
+            </if>
+            <if test="condition.ipAddress.op=='like'">
+                AND ipAddress like CONCAT('%', #{condition.ipAddress.data} , '%')
+            </if>
+            <if test="condition.ipAddress.op=='leftlike'">
+                AND ipAddress like CONCAT(#{condition.ipAddress.data} , '%')
+            </if>
+            <if test="condition.ipAddress.op=='in'">
+                ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op}
+                <foreach collection="condition.ipAddress.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userAgent!=null">
+
+            <if test="condition.userAgent.op!='in' and condition.userAgent.op!='like' and condition.userAgent.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op} #{condition.userAgent.data}
+            </if>
+            <if test="condition.userAgent.op=='like'">
+                AND userAgent like CONCAT('%', #{condition.userAgent.data} , '%')
+            </if>
+            <if test="condition.userAgent.op=='leftlike'">
+                AND userAgent like CONCAT(#{condition.userAgent.data} , '%')
+            </if>
+            <if test="condition.userAgent.op=='in'">
+                ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op}
+                <foreach collection="condition.userAgent.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userId!=null">
+
+            <if test="condition.userId.op!='in' and condition.userId.op!='like' and condition.userId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op} #{condition.userId.data}
+            </if>
+            <if test="condition.userId.op=='like'">
+                AND userId like CONCAT('%', #{condition.userId.data} , '%')
+            </if>
+            <if test="condition.userId.op=='leftlike'">
+                AND userId like CONCAT(#{condition.userId.data} , '%')
+            </if>
+            <if test="condition.userId.op=='in'">
+                ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op}
+                <foreach collection="condition.userId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.userLogin!=null">
+
+            <if test="condition.userLogin.op!='in' and condition.userLogin.op!='like' and condition.userLogin.op!='leftlike'">
+                ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op} #{condition.userLogin.data}
+            </if>
+            <if test="condition.userLogin.op=='like'">
+                AND userLogin like CONCAT('%', #{condition.userLogin.data} , '%')
+            </if>
+            <if test="condition.userLogin.op=='leftlike'">
+                AND userLogin like CONCAT(#{condition.userLogin.data} , '%')
+            </if>
+            <if test="condition.userLogin.op=='in'">
+                ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op}
+                <foreach collection="condition.userLogin.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        </trim>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+
+        <if test="offset != null">
+        limit ${offset}, ${rows}
+        </if>
+        </select>
+
+        <select id="queryPageByWhereSql" resultType="AdminUserToken">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.series!=null">
+                    , series
+                </if>
+                <if test="selector.tokenValue!=null">
+                    , tokenValue
+                </if>
+                <if test="selector.tokenDate!=null">
+                    , tokenDate
+                </if>
+                <if test="selector.ipAddress!=null">
+                    , ipAddress
+                </if>
+                <if test="selector.userAgent!=null">
+                    , userAgent
+                </if>
+                <if test="selector.userId!=null">
+                    , userId
+                </if>
+                <if test="selector.userLogin!=null">
+                    , userLogin
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+                FROM mubs_adminusertoken
+
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+
+        <if test="offset != null">
+        limit ${offset}, ${rows}
+        </if>
+        </select>
+
+        <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM mubs_adminusertoken
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+
+                <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
+                </if>
+                <if test="condition.id.op=='like'">
+                    AND id like CONCAT('%', #{condition.id.data} , '%')
+                </if>
+                <if test="condition.id.op=='leftlike'">
+                    AND id like CONCAT(#{condition.id.data} , '%')
+                </if>
+                <if test="condition.id.op=='in'">
+                    ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                    <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.series!=null">
+
+                <if test="condition.series.op!='in' and condition.series.op!='like' and condition.series.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.series.field}  ${condition.series.op} #{condition.series.data}
+                </if>
+                <if test="condition.series.op=='like'">
+                    AND series like CONCAT('%', #{condition.series.data} , '%')
+                </if>
+                <if test="condition.series.op=='leftlike'">
+                    AND series like CONCAT(#{condition.series.data} , '%')
+                </if>
+                <if test="condition.series.op=='in'">
+                    ${condition.groupOp}   ${condition.series.field}  ${condition.series.op}
+                    <foreach collection="condition.series.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.tokenValue!=null">
+
+                <if test="condition.tokenValue.op!='in' and condition.tokenValue.op!='like' and condition.tokenValue.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op} #{condition.tokenValue.data}
+                </if>
+                <if test="condition.tokenValue.op=='like'">
+                    AND tokenValue like CONCAT('%', #{condition.tokenValue.data} , '%')
+                </if>
+                <if test="condition.tokenValue.op=='leftlike'">
+                    AND tokenValue like CONCAT(#{condition.tokenValue.data} , '%')
+                </if>
+                <if test="condition.tokenValue.op=='in'">
+                    ${condition.groupOp}   ${condition.tokenValue.field}  ${condition.tokenValue.op}
+                    <foreach collection="condition.tokenValue.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.tokenDate!=null">
+
+                <if test="condition.tokenDate.op!='in' and condition.tokenDate.op!='like' and condition.tokenDate.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op} #{condition.tokenDate.data}
+                </if>
+                <if test="condition.tokenDate.op=='like'">
+                    AND tokenDate like CONCAT('%', #{condition.tokenDate.data} , '%')
+                </if>
+                <if test="condition.tokenDate.op=='leftlike'">
+                    AND tokenDate like CONCAT(#{condition.tokenDate.data} , '%')
+                </if>
+                <if test="condition.tokenDate.op=='in'">
+                    ${condition.groupOp}   ${condition.tokenDate.field}  ${condition.tokenDate.op}
+                    <foreach collection="condition.tokenDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.ipAddress!=null">
+
+                <if test="condition.ipAddress.op!='in' and condition.ipAddress.op!='like' and condition.ipAddress.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op} #{condition.ipAddress.data}
+                </if>
+                <if test="condition.ipAddress.op=='like'">
+                    AND ipAddress like CONCAT('%', #{condition.ipAddress.data} , '%')
+                </if>
+                <if test="condition.ipAddress.op=='leftlike'">
+                    AND ipAddress like CONCAT(#{condition.ipAddress.data} , '%')
+                </if>
+                <if test="condition.ipAddress.op=='in'">
+                    ${condition.groupOp}   ${condition.ipAddress.field}  ${condition.ipAddress.op}
+                    <foreach collection="condition.ipAddress.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.userAgent!=null">
+
+                <if test="condition.userAgent.op!='in' and condition.userAgent.op!='like' and condition.userAgent.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op} #{condition.userAgent.data}
+                </if>
+                <if test="condition.userAgent.op=='like'">
+                    AND userAgent like CONCAT('%', #{condition.userAgent.data} , '%')
+                </if>
+                <if test="condition.userAgent.op=='leftlike'">
+                    AND userAgent like CONCAT(#{condition.userAgent.data} , '%')
+                </if>
+                <if test="condition.userAgent.op=='in'">
+                    ${condition.groupOp}   ${condition.userAgent.field}  ${condition.userAgent.op}
+                    <foreach collection="condition.userAgent.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.userId!=null">
+
+                <if test="condition.userId.op!='in' and condition.userId.op!='like' and condition.userId.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op} #{condition.userId.data}
+                </if>
+                <if test="condition.userId.op=='like'">
+                    AND userId like CONCAT('%', #{condition.userId.data} , '%')
+                </if>
+                <if test="condition.userId.op=='leftlike'">
+                    AND userId like CONCAT(#{condition.userId.data} , '%')
+                </if>
+                <if test="condition.userId.op=='in'">
+                    ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op}
+                    <foreach collection="condition.userId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.userLogin!=null">
+
+                <if test="condition.userLogin.op!='in' and condition.userLogin.op!='like' and condition.userLogin.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op} #{condition.userLogin.data}
+                </if>
+                <if test="condition.userLogin.op=='like'">
+                    AND userLogin like CONCAT('%', #{condition.userLogin.data} , '%')
+                </if>
+                <if test="condition.userLogin.op=='leftlike'">
+                    AND userLogin like CONCAT(#{condition.userLogin.data} , '%')
+                </if>
+                <if test="condition.userLogin.op=='in'">
+                    ${condition.groupOp}   ${condition.userLogin.field}  ${condition.userLogin.op}
+                    <foreach collection="condition.userLogin.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+        </trim>
+        </select>
+
+        <select id="countByWhereSql" resultType="java.lang.Integer">
+        SELECT count(id) FROM mubs_adminusertoken
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+        </select>
+
+    <!-- 分页数据 end-->
+
+    <!-- 删除 start-->
+    <!-- 按Id删除 -->
+        <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM mubs_adminusertoken
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        </delete>
+
+
+        <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM mubs_adminusertoken
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="series!=null">
+                AND series = #{series}
+            </if>
+            <if test="tokenValue!=null">
+                AND tokenValue = #{tokenValue}
+            </if>
+            <if test="tokenDate!=null">
+                AND tokenDate = #{tokenDate}
+            </if>
+            <if test="ipAddress!=null">
+                AND ipAddress = #{ipAddress}
+            </if>
+            <if test="userAgent!=null">
+                AND userAgent = #{userAgent}
+            </if>
+            <if test="userId!=null">
+                AND userId = #{userId}
+            </if>
+            <if test="userLogin!=null">
+                AND userLogin = #{userLogin}
+            </if>
+        </trim>
+        </delete>
+
+        <delete id="deleteByWhereSql" parameterType="java.lang.String">
+        DELETE FROM mubs_adminusertoken
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+        <if test="nativeSql==null">
+            WHERE 1=2
+        </if>
+        </delete>
+
+        <delete id="deleteAll" >
+        DELETE FROM mubs_adminusertoken
+        </delete>
+
+
+    <!-- 删除 end-->
+</mapper>
+

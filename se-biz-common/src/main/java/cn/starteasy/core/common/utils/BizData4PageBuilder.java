@@ -4,6 +4,7 @@ import cn.starteasy.core.common.dao.IBaseDAO;
 import cn.starteasy.core.common.domain.persistent.Sorter;
 import cn.starteasy.core.common.domain.persistent.SqlOrderEnum;
 import cn.starteasy.core.common.domain.view.BizData4Page;
+import com.google.common.base.Strings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +40,17 @@ public class BizData4PageBuilder {
             sortBy = conditions.get("sortBy").toString();
         }
 
-        List<Sorter> sorterList = new ArrayList<>();
-        sorterList.add(new Sorter(orderBy, SqlOrderEnum.valueOf(sortBy)));
+        List<Sorter> sorterList = null;
+        if(!Strings.isNullOrEmpty(orderBy) && !Strings.isNullOrEmpty(sortBy)) {
+            sorterList = new ArrayList<>();
+            sorterList.add(new Sorter(orderBy, SqlOrderEnum.valueOf(sortBy)));
+        }
+
         List mainData = null;
         if(nativeSql == null) {
-            dao.queryPage(selector, conditions, offset, rows, sorterList);
+            mainData = dao.queryPage(selector, conditions, offset, rows, sorterList);
         } else {
-            dao.queryPageByWhereSql(selector, nativeSql, offset, rows, sorterList);
+            mainData = dao.queryPageByWhereSql(selector, nativeSql, offset, rows, sorterList);
         }
         int records = dao.count(conditions);
 

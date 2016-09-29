@@ -14,7 +14,9 @@ import cn.starteasy.core.common.adminui.backend.service.IResourceService;
 import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
 import cn.starteasy.core.common.adminui.controller.helpers.ActionPermHelper;
 import cn.starteasy.core.common.domain.BizStatusEnum;
+import cn.starteasy.core.common.domain.persistent.SearchEnum;
 import cn.starteasy.core.common.domain.persistent.SqlOrderEnum;
+import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
 import cn.starteasy.core.common.domain.persistent.utils.SorterBuilder;
 import cn.starteasy.core.common.domain.view.BizData4Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,9 +147,7 @@ public class ResourceController extends AbstractAdminController<IResourceService
     @RequestMapping(value = "/resourceParents")
     @ResponseBody
     public List<Resource> resourceParents() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("parentId", "0");
-        return resourceService.viewList(null, map, SorterBuilder.sorterList("id", SqlOrderEnum.ASC));
+        return resourceService.viewList(null, ConditionBuilder.condition("parentId", SearchEnum.eq, "0"), SorterBuilder.sorterList("id", SqlOrderEnum.ASC));
     }
 
 

@@ -16,7 +16,7 @@ dependencies {
     compile ("org.springframework:spring-context-support:$springVersion") {
         exclude(module: 'quartz')
     }
-    compile "org.springframework.security:spring-security-config:${spring_security_version}"
+
     compile "org.springframework.security:spring-security-data:${spring_security_version}"
     compile "org.springframework.security:spring-security-web:${spring_security_version}"
 

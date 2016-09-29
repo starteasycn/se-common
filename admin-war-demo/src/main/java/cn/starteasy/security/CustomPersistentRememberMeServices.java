@@ -1,25 +1,12 @@
 package cn.starteasy.security;
 
-import cn.starteasy.config.JHipsterProperties;
 import cn.starteasy.core.common.adminui.backend.dao.IAdminUserDAO;
-import cn.starteasy.core.common.adminui.backend.domain.AdminPersistentToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.authentication.rememberme.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.util.Arrays;
 
 /**
  * Custom implementation of Spring Security's RememberMeServices.

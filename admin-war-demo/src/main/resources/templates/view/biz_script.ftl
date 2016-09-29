@@ -3,7 +3,7 @@
 
 <!--[if !IE]> -->
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='${path}/assets/js/jquery.min.js'>"+"<"+"/script>");
+    window.jQuery || document.write("<script src='/assets/js/jquery.min.js'>"+"<"+"/script>");
     window.onload=function(){
         $("#ace-settings-sidebar").trigger("click");//固定左侧菜单
         $("#ace-settings-navbar").trigger("click");//固定头部导航栏
@@ -16,26 +16,29 @@
 
 <!--[if IE]>
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='${path}/assets/js/jquery1x.min.js'>"+"<"+"/script>");
+    window.jQuery || document.write("<script src='/assets/js/jquery1x.min.js'>"+"<"+"/script>");
 </script>
 <![endif]-->
 <script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='${path}/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+    if('ontouchstart' in document.documentElement) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
-<#--<script src="${path}/assets/js/require.js" defer async="true" ></script>-->
-<script src="${path}/assets/js/bootstrap.min.js"></script>
+<#--<script src="/assets/js/require.js" defer async="true" ></script>-->
+<script src="/assets/js/bootstrap.min.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="${path}/assets/js/date-time/bootstrap-datepicker.min.js"></script>
-<script src="${path}/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
-<#--<script src="${path}/assets/js/uncompressed/jqGrid/jquery.jqGrid.js"></script>-->
-<script src="${path}/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+<script src="/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
+<#--<script src="/assets/js/uncompressed/jqGrid/jquery.jqGrid.js"></script>-->
+<script src="/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+
+
+<script src="/assets/js/jquery.cookie.js"></script>
 
 <!-- ace scripts -->
-<script src="${path}/assets/js/ace-elements.min.js"></script>
-<script src="${path}/assets/js/ace.min.js"></script>
-<script src="${path}/assets/js/fuelux/jquery.ztree.core-3.5.min.js"></script>
-<script src="${path}/assets/js/fuelux/jquery.ztree.excheck-3.5.min.js"></script>
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/fuelux/jquery.ztree.core-3.5.min.js"></script>
+<script src="/assets/js/fuelux/jquery.ztree.excheck-3.5.min.js"></script>
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
@@ -133,9 +136,7 @@
 //            },
 
             <#list cols as col>
-                {name: '${col.colId}', index: '${col.colId}', width:${col.width}, sortable: false, editable: ${col.editable}, edittype: "${col.edittype}",
-                    editrules:${col.editrules}, editoptions:${col.editoptions}, formatter:${col.formatter}, formatoptions:${col.formatoptions},
-                    hidden:${(col.hide==1)?string('true','false')}
+                {name: '${col.colId}', index: '${col.colId}', width:${col.width}
                 }
 
                 <#if col_has_next>
@@ -623,17 +624,17 @@
     });
 </script>
 
-<link rel="stylesheet" href="${path}/assets/css/ace.onpage-help.css" />
-<link rel="stylesheet" href="${path}/docs/assets/js/themes/sunburst.css" />
+<link rel="stylesheet" href="/assets/css/ace.onpage-help.css" />
+<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css" />
 
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>
-<script src="${path}/assets/js/ace/ace.onpage-help.js"></script>
-<script src="${path}/docs/assets/js/rainbow.js"></script>
-<script src="${path}/docs/assets/js/language/generic.js"></script>
-<script src="${path}/docs/assets/js/language/html.js"></script>
-<script src="${path}/docs/assets/js/language/css.js"></script>
-<script src="${path}/docs/assets/js/language/javascript.js"></script>
+<script src="/assets/js/ace/ace.onpage-help.js"></script>
+<script src="/docs/assets/js/rainbow.js"></script>
+<script src="/docs/assets/js/language/generic.js"></script>
+<script src="/docs/assets/js/language/html.js"></script>
+<script src="/docs/assets/js/language/css.js"></script>
+<script src="/docs/assets/js/language/javascript.js"></script>
 <!-- biz js引入 -->
-<script src="${path}/assets/js/biz/biz-common.js"></script>
-<#--<script src="${path}/assets/js/biz/jpgrid-common.js"></script>-->
-<script src="${path}/assets/js/biz/module/formatter.js"></script>
+<script src="/assets/js/biz/biz-common.js"></script>
+<#--<script src="/assets/js/biz/jpgrid-common.js"></script>-->
+<script src="/assets/js/biz/module/formatter.js"></script>

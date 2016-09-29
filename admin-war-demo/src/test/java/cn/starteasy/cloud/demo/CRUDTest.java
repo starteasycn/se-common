@@ -109,4 +109,10 @@ public class CRUDTest {
         assertEquals("1q", adminUserList.get(0).getLogin());
         adminUserList.size();
     }
+
+
+    @Test
+    public void testCount(){
+        int count = adminUserDAO.count(Maps.newHashMap());
+    }
 }

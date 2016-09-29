@@ -20,7 +20,7 @@ public class LoginController {
     @RequestMapping("/login")
     public String login(Map<String,Object> model){
 
-        return "view/login";//返回的内容就是templetes下面文件的名称
+        return "login";//返回的内容就是templetes下面文件的名称
     }
 
     @RequestMapping("/sidebar")

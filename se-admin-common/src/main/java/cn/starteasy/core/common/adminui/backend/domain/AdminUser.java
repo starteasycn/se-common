@@ -14,11 +14,15 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 
 /**
  * 后台系统的专有模型
  */
-public class AdminUser extends UserDomain<Long> {
+public class AdminUser extends UserDomain<Long> implements UserDetails{
 	//是否管理员
     private Integer isAdmin;
 	//权限
@@ -135,6 +139,36 @@ public class AdminUser extends UserDomain<Long> {
 
 	public void setBizDimension(Integer bizDimension) {
 		this.bizDimension = bizDimension;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return login;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 }
 

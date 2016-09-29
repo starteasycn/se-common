@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.starteasy.core.common.adminui.backend.dao.IResourceDAO">
+
+
+
 <!--
+C
 insert
-update
-updateNull
-deleteById
-deleteByCondition
-deleteByProperty
-fetch
+insertMap
+R
 findOne
-findList
 findAll
-queryPage
-like
-queryList
+exists
 queryOne
-count
-selectMaxId
-updateOrSave
-selectOne
-selectList
+queryOneByWhereSql
+queryList
+queryListByWhereSql
+queryBySql
+queryBySqlCount
+U
+D
 -->
+
+
     <sql id="Base_Column_List">
-        id,
-        url,
-        orderNum,
-        parentId,
-        number,
-        longNumber,
-        name,
-        creator,
-        createDate,
-        lastModifier,
-        lastModDate,
-        description,
-        modelId,
-        bizModelName
+        id as id ,
+        url as url ,
+        orderNum as orderNum ,
+        parentId as parentId ,
+        number as number ,
+        longNumber as longNumber ,
+        name as name ,
+        creator as creator ,
+        createDate as createDate ,
+        lastModifier as lastModifier ,
+        lastModDate as lastModDate ,
+        description as description ,
+        modelId as modelId ,
+        bizModelName as bizModelName 
     </sql>
+
+    <!-- 插入 start-->
+
     <insert id="insert" parameterType="Resource">
         INSERT INTO mubs_resource (
-        id,
         url,
         orderNum,
         parentId,
@@ -56,7 +58,6 @@ selectList
         modelId,
         bizModelName
         ) VALUES (
-        #{id},
         #{url},
         #{orderNum},
         #{parentId},
@@ -71,10 +72,50 @@ selectList
         #{modelId},
         #{bizModelName}
         )
+            <selectKey resultType="java.lang.Integer" keyProperty="id">
+                SELECT LAST_INSERT_ID() AS ID
+            </selectKey>
     </insert>
 
-    <!-- 更新 -->
-    <update id="update" parameterType="Resource">
+
+    <insert id="insertMap" >
+        INSERT INTO mubs_resource (
+        url,
+        orderNum,
+        parentId,
+        number,
+        longNumber,
+        name,
+        creator,
+        createDate,
+        lastModifier,
+        lastModDate,
+        description,
+        modelId,
+        bizModelName
+                ) VALUES (
+        #{map.url},
+        #{map.orderNum},
+        #{map.parentId},
+        #{map.number},
+        #{map.longNumber},
+        #{map.name},
+        #{map.creator},
+        #{map.createDate},
+        #{map.lastModifier},
+        #{map.lastModDate},
+        #{map.description},
+        #{map.modelId},
+        #{map.bizModelName}
+                )
+    </insert>
+
+
+    <!-- 插入 end-->
+
+    <!-- 修改 start-->
+        <!-- 更新 -->
+        <update id="update" parameterType="Resource">
         UPDATE mubs_resource
         <trim prefix="SET" suffixOverrides=",">
             <if test="url!=null">
@@ -117,11 +158,11 @@ selectList
                 bizModelName = #{bizModelName},
             </if>
         </trim>
-        WHERE
+                WHERE
         id = #{id}
-    </update>
+        </update>
 
-    <update id="updateMap">
+        <update id="updateMap">
         UPDATE mubs_resource
         <trim prefix="SET" suffixOverrides=",">
             <if test="map.url!=null">
@@ -166,9 +207,9 @@ selectList
         </trim>
         WHERE
         id = #{map.id}
-    </update>
+        </update>
 
-    <update id="updateByCondition">
+        <update id="updateByCondition">
         UPDATE mubs_resource
         <trim prefix="SET" suffixOverrides=",">
             <if test="update.url!=null">
@@ -213,87 +254,103 @@ selectList
         </trim>
 
         <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="condition.id!=null">
-                AND id = #{condition.id}
+        <if test="condition.id!=null">
+            AND id = #{condition.id}
+        </if>
+        <if test="condition.url!=null">
+            AND url = #{condition.url}
+        </if>
+        <if test="condition.orderNum!=null">
+            AND orderNum = #{condition.orderNum}
+        </if>
+        <if test="condition.parentId!=null">
+            AND parentId = #{condition.parentId}
+        </if>
+        <if test="condition.number!=null">
+            AND number = #{condition.number}
+        </if>
+        <if test="condition.longNumber!=null">
+            AND longNumber = #{condition.longNumber}
+        </if>
+        <if test="condition.name!=null">
+            AND name = #{condition.name}
+        </if>
+        <if test="condition.creator!=null">
+            AND creator = #{condition.creator}
+        </if>
+        <if test="condition.createDate!=null">
+            AND createDate = #{condition.createDate}
+        </if>
+        <if test="condition.lastModifier!=null">
+            AND lastModifier = #{condition.lastModifier}
+        </if>
+        <if test="condition.lastModDate!=null">
+            AND lastModDate = #{condition.lastModDate}
+        </if>
+        <if test="condition.description!=null">
+            AND description = #{condition.description}
+        </if>
+        <if test="condition.modelId!=null">
+            AND modelId = #{condition.modelId}
+        </if>
+        <if test="condition.bizModelName!=null">
+            AND bizModelName = #{condition.bizModelName}
+        </if>
+        </trim>
+        </update>
+
+        <update id="updateByWhereSql">
+        UPDATE mubs_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.url!=null">
+                url = #{update.url},
             </if>
-            <if test="condition.url!=null">
-                AND url = #{condition.url}
+            <if test="update.orderNum!=null">
+                orderNum = #{update.orderNum},
             </if>
-            <if test="condition.orderNum!=null">
-                AND orderNum = #{condition.orderNum}
+            <if test="update.parentId!=null">
+                parentId = #{update.parentId},
             </if>
-            <if test="condition.parentId!=null">
-                AND parentId = #{condition.parentId}
+            <if test="update.number!=null">
+                number = #{update.number},
             </if>
-            <if test="condition.number!=null">
-                AND number = #{condition.number}
+            <if test="update.longNumber!=null">
+                longNumber = #{update.longNumber},
             </if>
-            <if test="condition.longNumber!=null">
-                AND longNumber = #{condition.longNumber}
+            <if test="update.name!=null">
+                name = #{update.name},
             </if>
-            <if test="condition.name!=null">
-                AND name = #{condition.name}
+            <if test="update.creator!=null">
+                creator = #{update.creator},
             </if>
-            <if test="condition.creator!=null">
-                AND creator = #{condition.creator}
+            <if test="update.createDate!=null">
+                createDate = #{update.createDate},
             </if>
-            <if test="condition.createDate!=null">
-                AND createDate = #{condition.createDate}
+            <if test="update.lastModifier!=null">
+                lastModifier = #{update.lastModifier},
             </if>
-            <if test="condition.lastModifier!=null">
-                AND lastModifier = #{condition.lastModifier}
+            <if test="update.lastModDate!=null">
+                lastModDate = #{update.lastModDate},
             </if>
-            <if test="condition.lastModDate!=null">
-                AND lastModDate = #{condition.lastModDate}
+            <if test="update.description!=null">
+                description = #{update.description},
             </if>
-            <if test="condition.description!=null">
-                AND description = #{condition.description}
+            <if test="update.modelId!=null">
+                modelId = #{update.modelId},
             </if>
-            <if test="condition.modelId!=null">
-                AND modelId = #{condition.modelId}
-            </if>
-            <if test="condition.bizModelName!=null">
-                AND bizModelName = #{condition.bizModelName}
+            <if test="update.bizModelName!=null">
+                bizModelName = #{update.bizModelName},
             </if>
         </trim>
-    </update>
-
-    <insert id="insertMap" >
-        INSERT INTO mubs_resource (
-                id,
-                url,
-                orderNum,
-                parentId,
-                number,
-                longNumber,
-                name,
-                creator,
-                createDate,
-                lastModifier,
-                lastModDate,
-                description,
-                modelId,
-                bizModelName
-        ) VALUES (
-                #{map.id},
-                #{map.url},
-                #{map.orderNum},
-                #{map.parentId},
-                #{map.number},
-                #{map.longNumber},
-                #{map.name},
-                #{map.creator},
-                #{map.createDate},
-                #{map.lastModifier},
-                #{map.lastModDate},
-                #{map.description},
-                #{map.modelId},
-                #{map.bizModelName}
-        )
-    </insert>
 
 
-    <update id="updateNull" parameterType="Resource">
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+        </update>
+
+
+
+        <update id="updateNull" parameterType="Resource">
         UPDATE mubs_resource
         <trim prefix="SET" suffixOverrides=",">
             url = #{url},
@@ -310,280 +367,1412 @@ selectList
             modelId = #{modelId},
             bizModelName = #{bizModelName},
         </trim>
-        WHERE
+                WHERE
         id = #{id} 
-    </update>
+        </update>
+    <!-- 修改 end-->
 
-    <!-- 按Id删除 -->
-    <delete id="deleteById" parameterType="java.lang.Integer">
-        DELETE FROM mubs_resource
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            AND id = #{id}
-        </trim>
-    </delete>
-
-
-    <delete id="deleteByCondition" parameterType="java.util.Map">
-        DELETE FROM mubs_resource
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="id!=null">
-                AND id = #{id}
-            </if>
-            <if test="url!=null">
-                AND url = #{url}
-            </if>
-            <if test="orderNum!=null">
-                AND orderNum = #{orderNum}
-            </if>
-            <if test="parentId!=null">
-                AND parentId = #{parentId}
-            </if>
-            <if test="number!=null">
-                AND number = #{number}
-            </if>
-            <if test="longNumber!=null">
-                AND longNumber = #{longNumber}
-            </if>
-            <if test="name!=null">
-                AND name = #{name}
-            </if>
-            <if test="creator!=null">
-                AND creator = #{creator}
-            </if>
-            <if test="createDate!=null">
-                AND createDate = #{createDate}
-            </if>
-            <if test="lastModifier!=null">
-                AND lastModifier = #{lastModifier}
-            </if>
-            <if test="lastModDate!=null">
-                AND lastModDate = #{lastModDate}
-            </if>
-            <if test="description!=null">
-                AND description = #{description}
-            </if>
-            <if test="modelId!=null">
-                AND modelId = #{modelId}
-            </if>
-            <if test="bizModelName!=null">
-                AND bizModelName = #{bizModelName}
-            </if>
-        </trim>
-    </delete>
-
-    <delete id="deleteByProperty" parameterType="java.util.Map">
-        DELETE FROM mubs_resource WHERE
-        ${property} = #{value}
-    </delete>
-
-    <select id="fetch" parameterType="java.lang.Integer" resultType="Resource">
+    <!-- 读取数据 start-->
+        <select id="findOne" parameterType="java.lang.Integer" resultType="Resource">
         SELECT
         <include refid="Base_Column_List" />
         FROM mubs_resource
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             AND id = #{id}
         </trim>
-    </select>
+        </select>
 
-    <select id="findOne" parameterType="java.util.Map" resultType="Resource">
+        <select id="findAll" resultType="Resource">
         SELECT
         <include refid="Base_Column_List" />
-        FROM mubs_resource WHERE
-        ${property} = #{value}
+        FROM mubs_resource
+        </select>
+
+        <!-- 查询 -->
+        <select id="queryOne" resultType="Resource">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.url!=null">
+                    , url
+                </if>
+                <if test="selector.orderNum!=null">
+                    , orderNum
+                </if>
+                <if test="selector.parentId!=null">
+                    , parentId
+                </if>
+                <if test="selector.number!=null">
+                    , number
+                </if>
+                <if test="selector.longNumber!=null">
+                    , longNumber
+                </if>
+                <if test="selector.name!=null">
+                    , name
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.description!=null">
+                    , description
+                </if>
+                <if test="selector.modelId!=null">
+                    , modelId
+                </if>
+                <if test="selector.bizModelName!=null">
+                    , bizModelName
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+
+                FROM mubs_resource
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+
+            <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
+            </if>
+            <if test="condition.id.op=='like'">
+                AND id like CONCAT('%', #{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='leftlike'">
+                AND id like CONCAT(#{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='in'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.url!=null">
+
+            <if test="condition.url.op!='in' and condition.url.op!='like' and condition.url.op!='leftlike'">
+                ${condition.groupOp}   ${condition.url.field}  ${condition.url.op} #{condition.url.data}
+            </if>
+            <if test="condition.url.op=='like'">
+                AND url like CONCAT('%', #{condition.url.data} , '%')
+            </if>
+            <if test="condition.url.op=='leftlike'">
+                AND url like CONCAT(#{condition.url.data} , '%')
+            </if>
+            <if test="condition.url.op=='in'">
+                ${condition.groupOp}   ${condition.url.field}  ${condition.url.op}
+                <foreach collection="condition.url.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.orderNum!=null">
+
+            <if test="condition.orderNum.op!='in' and condition.orderNum.op!='like' and condition.orderNum.op!='leftlike'">
+                ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op} #{condition.orderNum.data}
+            </if>
+            <if test="condition.orderNum.op=='like'">
+                AND orderNum like CONCAT('%', #{condition.orderNum.data} , '%')
+            </if>
+            <if test="condition.orderNum.op=='leftlike'">
+                AND orderNum like CONCAT(#{condition.orderNum.data} , '%')
+            </if>
+            <if test="condition.orderNum.op=='in'">
+                ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op}
+                <foreach collection="condition.orderNum.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.parentId!=null">
+
+            <if test="condition.parentId.op!='in' and condition.parentId.op!='like' and condition.parentId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op} #{condition.parentId.data}
+            </if>
+            <if test="condition.parentId.op=='like'">
+                AND parentId like CONCAT('%', #{condition.parentId.data} , '%')
+            </if>
+            <if test="condition.parentId.op=='leftlike'">
+                AND parentId like CONCAT(#{condition.parentId.data} , '%')
+            </if>
+            <if test="condition.parentId.op=='in'">
+                ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op}
+                <foreach collection="condition.parentId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.number!=null">
+
+            <if test="condition.number.op!='in' and condition.number.op!='like' and condition.number.op!='leftlike'">
+                ${condition.groupOp}   ${condition.number.field}  ${condition.number.op} #{condition.number.data}
+            </if>
+            <if test="condition.number.op=='like'">
+                AND number like CONCAT('%', #{condition.number.data} , '%')
+            </if>
+            <if test="condition.number.op=='leftlike'">
+                AND number like CONCAT(#{condition.number.data} , '%')
+            </if>
+            <if test="condition.number.op=='in'">
+                ${condition.groupOp}   ${condition.number.field}  ${condition.number.op}
+                <foreach collection="condition.number.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.longNumber!=null">
+
+            <if test="condition.longNumber.op!='in' and condition.longNumber.op!='like' and condition.longNumber.op!='leftlike'">
+                ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op} #{condition.longNumber.data}
+            </if>
+            <if test="condition.longNumber.op=='like'">
+                AND longNumber like CONCAT('%', #{condition.longNumber.data} , '%')
+            </if>
+            <if test="condition.longNumber.op=='leftlike'">
+                AND longNumber like CONCAT(#{condition.longNumber.data} , '%')
+            </if>
+            <if test="condition.longNumber.op=='in'">
+                ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op}
+                <foreach collection="condition.longNumber.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.name!=null">
+
+            <if test="condition.name.op!='in' and condition.name.op!='like' and condition.name.op!='leftlike'">
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op} #{condition.name.data}
+            </if>
+            <if test="condition.name.op=='like'">
+                AND name like CONCAT('%', #{condition.name.data} , '%')
+            </if>
+            <if test="condition.name.op=='leftlike'">
+                AND name like CONCAT(#{condition.name.data} , '%')
+            </if>
+            <if test="condition.name.op=='in'">
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}
+                <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.creator!=null">
+
+            <if test="condition.creator.op!='in' and condition.creator.op!='like' and condition.creator.op!='leftlike'">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op} #{condition.creator.data}
+            </if>
+            <if test="condition.creator.op=='like'">
+                AND creator like CONCAT('%', #{condition.creator.data} , '%')
+            </if>
+            <if test="condition.creator.op=='leftlike'">
+                AND creator like CONCAT(#{condition.creator.data} , '%')
+            </if>
+            <if test="condition.creator.op=='in'">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}
+                <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.createDate!=null">
+
+            <if test="condition.createDate.op!='in' and condition.createDate.op!='like' and condition.createDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op} #{condition.createDate.data}
+            </if>
+            <if test="condition.createDate.op=='like'">
+                AND createDate like CONCAT('%', #{condition.createDate.data} , '%')
+            </if>
+            <if test="condition.createDate.op=='leftlike'">
+                AND createDate like CONCAT(#{condition.createDate.data} , '%')
+            </if>
+            <if test="condition.createDate.op=='in'">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}
+                <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModifier!=null">
+
+            <if test="condition.lastModifier.op!='in' and condition.lastModifier.op!='like' and condition.lastModifier.op!='leftlike'">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op} #{condition.lastModifier.data}
+            </if>
+            <if test="condition.lastModifier.op=='like'">
+                AND lastModifier like CONCAT('%', #{condition.lastModifier.data} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='leftlike'">
+                AND lastModifier like CONCAT(#{condition.lastModifier.data} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='in'">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}
+                <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModDate!=null">
+
+            <if test="condition.lastModDate.op!='in' and condition.lastModDate.op!='like' and condition.lastModDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op} #{condition.lastModDate.data}
+            </if>
+            <if test="condition.lastModDate.op=='like'">
+                AND lastModDate like CONCAT('%', #{condition.lastModDate.data} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='leftlike'">
+                AND lastModDate like CONCAT(#{condition.lastModDate.data} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='in'">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}
+                <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.description!=null">
+
+            <if test="condition.description.op!='in' and condition.description.op!='like' and condition.description.op!='leftlike'">
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op} #{condition.description.data}
+            </if>
+            <if test="condition.description.op=='like'">
+                AND description like CONCAT('%', #{condition.description.data} , '%')
+            </if>
+            <if test="condition.description.op=='leftlike'">
+                AND description like CONCAT(#{condition.description.data} , '%')
+            </if>
+            <if test="condition.description.op=='in'">
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}
+                <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.modelId!=null">
+
+            <if test="condition.modelId.op!='in' and condition.modelId.op!='like' and condition.modelId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op} #{condition.modelId.data}
+            </if>
+            <if test="condition.modelId.op=='like'">
+                AND modelId like CONCAT('%', #{condition.modelId.data} , '%')
+            </if>
+            <if test="condition.modelId.op=='leftlike'">
+                AND modelId like CONCAT(#{condition.modelId.data} , '%')
+            </if>
+            <if test="condition.modelId.op=='in'">
+                ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op}
+                <foreach collection="condition.modelId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.bizModelName!=null">
+
+            <if test="condition.bizModelName.op!='in' and condition.bizModelName.op!='like' and condition.bizModelName.op!='leftlike'">
+                ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op} #{condition.bizModelName.data}
+            </if>
+            <if test="condition.bizModelName.op=='like'">
+                AND bizModelName like CONCAT('%', #{condition.bizModelName.data} , '%')
+            </if>
+            <if test="condition.bizModelName.op=='leftlike'">
+                AND bizModelName like CONCAT(#{condition.bizModelName.data} , '%')
+            </if>
+            <if test="condition.bizModelName.op=='in'">
+                ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op}
+                <foreach collection="condition.bizModelName.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+                </trim>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
         LIMIT 0,1
-    </select>
+        </select>
 
-    <select id="findList" parameterType="java.util.Map" resultType="Resource">
+        <!-- 查询 -->
+        <select id="queryOneByWhereSql" resultType="Resource">
         SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.url!=null">
+                    , url
+                </if>
+                <if test="selector.orderNum!=null">
+                    , orderNum
+                </if>
+                <if test="selector.parentId!=null">
+                    , parentId
+                </if>
+                <if test="selector.number!=null">
+                    , number
+                </if>
+                <if test="selector.longNumber!=null">
+                    , longNumber
+                </if>
+                <if test="selector.name!=null">
+                    , name
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.description!=null">
+                    , description
+                </if>
+                <if test="selector.modelId!=null">
+                    , modelId
+                </if>
+                <if test="selector.bizModelName!=null">
+                    , bizModelName
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
         <include refid="Base_Column_List" />
-        FROM mubs_resource WHERE
-        ${property} = #{value}
-    </select>
+        </if>
 
-    <select id="findAll" resultType="Resource">
-        SELECT
-        <include refid="Base_Column_List" />
         FROM mubs_resource
-    </select>
 
-    <select id="queryPage" resultType="Resource">
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+        LIMIT 0,1
+        </select>
+
+        <!-- 查询 -->
+        <select id="queryList" resultType="Resource">
         SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.url!=null">
+                    , url
+                </if>
+                <if test="selector.orderNum!=null">
+                    , orderNum
+                </if>
+                <if test="selector.parentId!=null">
+                    , parentId
+                </if>
+                <if test="selector.number!=null">
+                    , number
+                </if>
+                <if test="selector.longNumber!=null">
+                    , longNumber
+                </if>
+                <if test="selector.name!=null">
+                    , name
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.description!=null">
+                    , description
+                </if>
+                <if test="selector.modelId!=null">
+                    , modelId
+                </if>
+                <if test="selector.bizModelName!=null">
+                    , bizModelName
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
         <include refid="Base_Column_List" />
-        FROM mubs_resource
-        <where>
+        </if>
 
-            <if test="condition.whereSql != null">
-                and id in (#{condition.whereSql})
+        FROM mubs_resource
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+
+            <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
             </if>
-        </where>
+            <if test="condition.id.op=='like'">
+                AND id like CONCAT('%', #{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='leftlike'">
+                AND id like CONCAT(#{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='in'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.url!=null">
+
+            <if test="condition.url.op!='in' and condition.url.op!='like' and condition.url.op!='leftlike'">
+                ${condition.groupOp}   ${condition.url.field}  ${condition.url.op} #{condition.url.data}
+            </if>
+            <if test="condition.url.op=='like'">
+                AND url like CONCAT('%', #{condition.url.data} , '%')
+            </if>
+            <if test="condition.url.op=='leftlike'">
+                AND url like CONCAT(#{condition.url.data} , '%')
+            </if>
+            <if test="condition.url.op=='in'">
+                ${condition.groupOp}   ${condition.url.field}  ${condition.url.op}
+                <foreach collection="condition.url.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.orderNum!=null">
+
+            <if test="condition.orderNum.op!='in' and condition.orderNum.op!='like' and condition.orderNum.op!='leftlike'">
+                ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op} #{condition.orderNum.data}
+            </if>
+            <if test="condition.orderNum.op=='like'">
+                AND orderNum like CONCAT('%', #{condition.orderNum.data} , '%')
+            </if>
+            <if test="condition.orderNum.op=='leftlike'">
+                AND orderNum like CONCAT(#{condition.orderNum.data} , '%')
+            </if>
+            <if test="condition.orderNum.op=='in'">
+                ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op}
+                <foreach collection="condition.orderNum.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.parentId!=null">
+
+            <if test="condition.parentId.op!='in' and condition.parentId.op!='like' and condition.parentId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op} #{condition.parentId.data}
+            </if>
+            <if test="condition.parentId.op=='like'">
+                AND parentId like CONCAT('%', #{condition.parentId.data} , '%')
+            </if>
+            <if test="condition.parentId.op=='leftlike'">
+                AND parentId like CONCAT(#{condition.parentId.data} , '%')
+            </if>
+            <if test="condition.parentId.op=='in'">
+                ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op}
+                <foreach collection="condition.parentId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.number!=null">
+
+            <if test="condition.number.op!='in' and condition.number.op!='like' and condition.number.op!='leftlike'">
+                ${condition.groupOp}   ${condition.number.field}  ${condition.number.op} #{condition.number.data}
+            </if>
+            <if test="condition.number.op=='like'">
+                AND number like CONCAT('%', #{condition.number.data} , '%')
+            </if>
+            <if test="condition.number.op=='leftlike'">
+                AND number like CONCAT(#{condition.number.data} , '%')
+            </if>
+            <if test="condition.number.op=='in'">
+                ${condition.groupOp}   ${condition.number.field}  ${condition.number.op}
+                <foreach collection="condition.number.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.longNumber!=null">
+
+            <if test="condition.longNumber.op!='in' and condition.longNumber.op!='like' and condition.longNumber.op!='leftlike'">
+                ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op} #{condition.longNumber.data}
+            </if>
+            <if test="condition.longNumber.op=='like'">
+                AND longNumber like CONCAT('%', #{condition.longNumber.data} , '%')
+            </if>
+            <if test="condition.longNumber.op=='leftlike'">
+                AND longNumber like CONCAT(#{condition.longNumber.data} , '%')
+            </if>
+            <if test="condition.longNumber.op=='in'">
+                ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op}
+                <foreach collection="condition.longNumber.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.name!=null">
+
+            <if test="condition.name.op!='in' and condition.name.op!='like' and condition.name.op!='leftlike'">
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op} #{condition.name.data}
+            </if>
+            <if test="condition.name.op=='like'">
+                AND name like CONCAT('%', #{condition.name.data} , '%')
+            </if>
+            <if test="condition.name.op=='leftlike'">
+                AND name like CONCAT(#{condition.name.data} , '%')
+            </if>
+            <if test="condition.name.op=='in'">
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}
+                <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.creator!=null">
+
+            <if test="condition.creator.op!='in' and condition.creator.op!='like' and condition.creator.op!='leftlike'">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op} #{condition.creator.data}
+            </if>
+            <if test="condition.creator.op=='like'">
+                AND creator like CONCAT('%', #{condition.creator.data} , '%')
+            </if>
+            <if test="condition.creator.op=='leftlike'">
+                AND creator like CONCAT(#{condition.creator.data} , '%')
+            </if>
+            <if test="condition.creator.op=='in'">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}
+                <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.createDate!=null">
+
+            <if test="condition.createDate.op!='in' and condition.createDate.op!='like' and condition.createDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op} #{condition.createDate.data}
+            </if>
+            <if test="condition.createDate.op=='like'">
+                AND createDate like CONCAT('%', #{condition.createDate.data} , '%')
+            </if>
+            <if test="condition.createDate.op=='leftlike'">
+                AND createDate like CONCAT(#{condition.createDate.data} , '%')
+            </if>
+            <if test="condition.createDate.op=='in'">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}
+                <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModifier!=null">
+
+            <if test="condition.lastModifier.op!='in' and condition.lastModifier.op!='like' and condition.lastModifier.op!='leftlike'">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op} #{condition.lastModifier.data}
+            </if>
+            <if test="condition.lastModifier.op=='like'">
+                AND lastModifier like CONCAT('%', #{condition.lastModifier.data} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='leftlike'">
+                AND lastModifier like CONCAT(#{condition.lastModifier.data} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='in'">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}
+                <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModDate!=null">
+
+            <if test="condition.lastModDate.op!='in' and condition.lastModDate.op!='like' and condition.lastModDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op} #{condition.lastModDate.data}
+            </if>
+            <if test="condition.lastModDate.op=='like'">
+                AND lastModDate like CONCAT('%', #{condition.lastModDate.data} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='leftlike'">
+                AND lastModDate like CONCAT(#{condition.lastModDate.data} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='in'">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}
+                <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.description!=null">
+
+            <if test="condition.description.op!='in' and condition.description.op!='like' and condition.description.op!='leftlike'">
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op} #{condition.description.data}
+            </if>
+            <if test="condition.description.op=='like'">
+                AND description like CONCAT('%', #{condition.description.data} , '%')
+            </if>
+            <if test="condition.description.op=='leftlike'">
+                AND description like CONCAT(#{condition.description.data} , '%')
+            </if>
+            <if test="condition.description.op=='in'">
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}
+                <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.modelId!=null">
+
+            <if test="condition.modelId.op!='in' and condition.modelId.op!='like' and condition.modelId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op} #{condition.modelId.data}
+            </if>
+            <if test="condition.modelId.op=='like'">
+                AND modelId like CONCAT('%', #{condition.modelId.data} , '%')
+            </if>
+            <if test="condition.modelId.op=='leftlike'">
+                AND modelId like CONCAT(#{condition.modelId.data} , '%')
+            </if>
+            <if test="condition.modelId.op=='in'">
+                ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op}
+                <foreach collection="condition.modelId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.bizModelName!=null">
+
+            <if test="condition.bizModelName.op!='in' and condition.bizModelName.op!='like' and condition.bizModelName.op!='leftlike'">
+                ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op} #{condition.bizModelName.data}
+            </if>
+            <if test="condition.bizModelName.op=='like'">
+                AND bizModelName like CONCAT('%', #{condition.bizModelName.data} , '%')
+            </if>
+            <if test="condition.bizModelName.op=='leftlike'">
+                AND bizModelName like CONCAT(#{condition.bizModelName.data} , '%')
+            </if>
+            <if test="condition.bizModelName.op=='in'">
+                ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op}
+                <foreach collection="condition.bizModelName.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        </trim>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+        </select>
+
+        <!-- 查询 -->
+        <select id="queryListByWhereSql" resultType="Resource">
+            SELECT
+            <if test="selector!=null">
+                <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.url!=null">
+                        , url
+                    </if>
+                    <if test="selector.orderNum!=null">
+                        , orderNum
+                    </if>
+                    <if test="selector.parentId!=null">
+                        , parentId
+                    </if>
+                    <if test="selector.number!=null">
+                        , number
+                    </if>
+                    <if test="selector.longNumber!=null">
+                        , longNumber
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+                    <if test="selector.modelId!=null">
+                        , modelId
+                    </if>
+                    <if test="selector.bizModelName!=null">
+                        , bizModelName
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
+
+        FROM mubs_resource
+
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+
+        <if test="sorter!=null" >
+            ORDER BY
+            <foreach collection="sorter" item="sort" separator="," >
+                ${sort.field} ${sort.order}</foreach>
+        </if>
+        </select>
+
+        <select id="queryBySql" resultType="Map">
+${executeSql}        </select>
+
+        <select id="queryBySqlCount" resultType="java.lang.Long">
+${executeSqlCount}        </select>
+
+    <!-- 读取数据 end-->
+
+    <!-- 分页数据 start-->
+
+        <select id="queryPage" resultType="Resource">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.url!=null">
+                    , url
+                </if>
+                <if test="selector.orderNum!=null">
+                    , orderNum
+                </if>
+                <if test="selector.parentId!=null">
+                    , parentId
+                </if>
+                <if test="selector.number!=null">
+                    , number
+                </if>
+                <if test="selector.longNumber!=null">
+                    , longNumber
+                </if>
+                <if test="selector.name!=null">
+                    , name
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.description!=null">
+                    , description
+                </if>
+                <if test="selector.modelId!=null">
+                    , modelId
+                </if>
+                <if test="selector.bizModelName!=null">
+                    , bizModelName
+                </if>
+        </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+                FROM mubs_resource
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="condition.id!=null">
+
+            <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
+            </if>
+            <if test="condition.id.op=='like'">
+                AND id like CONCAT('%', #{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='leftlike'">
+                AND id like CONCAT(#{condition.id.data} , '%')
+            </if>
+            <if test="condition.id.op=='in'">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.url!=null">
+
+            <if test="condition.url.op!='in' and condition.url.op!='like' and condition.url.op!='leftlike'">
+                ${condition.groupOp}   ${condition.url.field}  ${condition.url.op} #{condition.url.data}
+            </if>
+            <if test="condition.url.op=='like'">
+                AND url like CONCAT('%', #{condition.url.data} , '%')
+            </if>
+            <if test="condition.url.op=='leftlike'">
+                AND url like CONCAT(#{condition.url.data} , '%')
+            </if>
+            <if test="condition.url.op=='in'">
+                ${condition.groupOp}   ${condition.url.field}  ${condition.url.op}
+                <foreach collection="condition.url.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.orderNum!=null">
+
+            <if test="condition.orderNum.op!='in' and condition.orderNum.op!='like' and condition.orderNum.op!='leftlike'">
+                ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op} #{condition.orderNum.data}
+            </if>
+            <if test="condition.orderNum.op=='like'">
+                AND orderNum like CONCAT('%', #{condition.orderNum.data} , '%')
+            </if>
+            <if test="condition.orderNum.op=='leftlike'">
+                AND orderNum like CONCAT(#{condition.orderNum.data} , '%')
+            </if>
+            <if test="condition.orderNum.op=='in'">
+                ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op}
+                <foreach collection="condition.orderNum.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.parentId!=null">
+
+            <if test="condition.parentId.op!='in' and condition.parentId.op!='like' and condition.parentId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op} #{condition.parentId.data}
+            </if>
+            <if test="condition.parentId.op=='like'">
+                AND parentId like CONCAT('%', #{condition.parentId.data} , '%')
+            </if>
+            <if test="condition.parentId.op=='leftlike'">
+                AND parentId like CONCAT(#{condition.parentId.data} , '%')
+            </if>
+            <if test="condition.parentId.op=='in'">
+                ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op}
+                <foreach collection="condition.parentId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.number!=null">
+
+            <if test="condition.number.op!='in' and condition.number.op!='like' and condition.number.op!='leftlike'">
+                ${condition.groupOp}   ${condition.number.field}  ${condition.number.op} #{condition.number.data}
+            </if>
+            <if test="condition.number.op=='like'">
+                AND number like CONCAT('%', #{condition.number.data} , '%')
+            </if>
+            <if test="condition.number.op=='leftlike'">
+                AND number like CONCAT(#{condition.number.data} , '%')
+            </if>
+            <if test="condition.number.op=='in'">
+                ${condition.groupOp}   ${condition.number.field}  ${condition.number.op}
+                <foreach collection="condition.number.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.longNumber!=null">
+
+            <if test="condition.longNumber.op!='in' and condition.longNumber.op!='like' and condition.longNumber.op!='leftlike'">
+                ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op} #{condition.longNumber.data}
+            </if>
+            <if test="condition.longNumber.op=='like'">
+                AND longNumber like CONCAT('%', #{condition.longNumber.data} , '%')
+            </if>
+            <if test="condition.longNumber.op=='leftlike'">
+                AND longNumber like CONCAT(#{condition.longNumber.data} , '%')
+            </if>
+            <if test="condition.longNumber.op=='in'">
+                ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op}
+                <foreach collection="condition.longNumber.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.name!=null">
+
+            <if test="condition.name.op!='in' and condition.name.op!='like' and condition.name.op!='leftlike'">
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op} #{condition.name.data}
+            </if>
+            <if test="condition.name.op=='like'">
+                AND name like CONCAT('%', #{condition.name.data} , '%')
+            </if>
+            <if test="condition.name.op=='leftlike'">
+                AND name like CONCAT(#{condition.name.data} , '%')
+            </if>
+            <if test="condition.name.op=='in'">
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}
+                <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.creator!=null">
+
+            <if test="condition.creator.op!='in' and condition.creator.op!='like' and condition.creator.op!='leftlike'">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op} #{condition.creator.data}
+            </if>
+            <if test="condition.creator.op=='like'">
+                AND creator like CONCAT('%', #{condition.creator.data} , '%')
+            </if>
+            <if test="condition.creator.op=='leftlike'">
+                AND creator like CONCAT(#{condition.creator.data} , '%')
+            </if>
+            <if test="condition.creator.op=='in'">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}
+                <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.createDate!=null">
+
+            <if test="condition.createDate.op!='in' and condition.createDate.op!='like' and condition.createDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op} #{condition.createDate.data}
+            </if>
+            <if test="condition.createDate.op=='like'">
+                AND createDate like CONCAT('%', #{condition.createDate.data} , '%')
+            </if>
+            <if test="condition.createDate.op=='leftlike'">
+                AND createDate like CONCAT(#{condition.createDate.data} , '%')
+            </if>
+            <if test="condition.createDate.op=='in'">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}
+                <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModifier!=null">
+
+            <if test="condition.lastModifier.op!='in' and condition.lastModifier.op!='like' and condition.lastModifier.op!='leftlike'">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op} #{condition.lastModifier.data}
+            </if>
+            <if test="condition.lastModifier.op=='like'">
+                AND lastModifier like CONCAT('%', #{condition.lastModifier.data} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='leftlike'">
+                AND lastModifier like CONCAT(#{condition.lastModifier.data} , '%')
+            </if>
+            <if test="condition.lastModifier.op=='in'">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}
+                <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.lastModDate!=null">
+
+            <if test="condition.lastModDate.op!='in' and condition.lastModDate.op!='like' and condition.lastModDate.op!='leftlike'">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op} #{condition.lastModDate.data}
+            </if>
+            <if test="condition.lastModDate.op=='like'">
+                AND lastModDate like CONCAT('%', #{condition.lastModDate.data} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='leftlike'">
+                AND lastModDate like CONCAT(#{condition.lastModDate.data} , '%')
+            </if>
+            <if test="condition.lastModDate.op=='in'">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}
+                <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.description!=null">
+
+            <if test="condition.description.op!='in' and condition.description.op!='like' and condition.description.op!='leftlike'">
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op} #{condition.description.data}
+            </if>
+            <if test="condition.description.op=='like'">
+                AND description like CONCAT('%', #{condition.description.data} , '%')
+            </if>
+            <if test="condition.description.op=='leftlike'">
+                AND description like CONCAT(#{condition.description.data} , '%')
+            </if>
+            <if test="condition.description.op=='in'">
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}
+                <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.modelId!=null">
+
+            <if test="condition.modelId.op!='in' and condition.modelId.op!='like' and condition.modelId.op!='leftlike'">
+                ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op} #{condition.modelId.data}
+            </if>
+            <if test="condition.modelId.op=='like'">
+                AND modelId like CONCAT('%', #{condition.modelId.data} , '%')
+            </if>
+            <if test="condition.modelId.op=='leftlike'">
+                AND modelId like CONCAT(#{condition.modelId.data} , '%')
+            </if>
+            <if test="condition.modelId.op=='in'">
+                ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op}
+                <foreach collection="condition.modelId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        <if test="condition.bizModelName!=null">
+
+            <if test="condition.bizModelName.op!='in' and condition.bizModelName.op!='like' and condition.bizModelName.op!='leftlike'">
+                ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op} #{condition.bizModelName.data}
+            </if>
+            <if test="condition.bizModelName.op=='like'">
+                AND bizModelName like CONCAT('%', #{condition.bizModelName.data} , '%')
+            </if>
+            <if test="condition.bizModelName.op=='leftlike'">
+                AND bizModelName like CONCAT(#{condition.bizModelName.data} , '%')
+            </if>
+            <if test="condition.bizModelName.op=='in'">
+                ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op}
+                <foreach collection="condition.bizModelName.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+            </if>
+        </if>
+        </trim>
+
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
 
         <if test="offset != null">
-            limit ${offset}, ${rows}
+        limit ${offset}, ${rows}
         </if>
-    </select>
+        </select>
 
-    <select id="like" parameterType="java.util.Map" resultType="Resource">
+        <select id="queryPageByWhereSql" resultType="Resource">
         SELECT
-        <include refid="Base_Column_List" />
-        FROM mubs_resource
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="id!=null">
-                AND id like '%#{id}%'
-            </if>
-            <if test="url!=null">
-                AND url like '%#{url}%'
-            </if>
-            <if test="orderNum!=null">
-                AND orderNum like '%#{orderNum}%'
-            </if>
-            <if test="parentId!=null">
-                AND parentId like '%#{parentId}%'
-            </if>
-            <if test="number!=null">
-                AND number like '%#{number}%'
-            </if>
-            <if test="longNumber!=null">
-                AND longNumber like '%#{longNumber}%'
-            </if>
-            <if test="name!=null">
-                AND name like '%#{name}%'
-            </if>
-            <if test="creator!=null">
-                AND creator like '%#{creator}%'
-            </if>
-            <if test="createDate!=null">
-                AND createDate like '%#{createDate}%'
-            </if>
-            <if test="lastModifier!=null">
-                AND lastModifier like '%#{lastModifier}%'
-            </if>
-            <if test="lastModDate!=null">
-                AND lastModDate like '%#{lastModDate}%'
-            </if>
-            <if test="description!=null">
-                AND description like '%#{description}%'
-            </if>
-            <if test="modelId!=null">
-                AND modelId like '%#{modelId}%'
-            </if>
-            <if test="bizModelName!=null">
-                AND bizModelName like '%#{bizModelName}%'
-            </if>
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.url!=null">
+                    , url
+                </if>
+                <if test="selector.orderNum!=null">
+                    , orderNum
+                </if>
+                <if test="selector.parentId!=null">
+                    , parentId
+                </if>
+                <if test="selector.number!=null">
+                    , number
+                </if>
+                <if test="selector.longNumber!=null">
+                    , longNumber
+                </if>
+                <if test="selector.name!=null">
+                    , name
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.description!=null">
+                    , description
+                </if>
+                <if test="selector.modelId!=null">
+                    , modelId
+                </if>
+                <if test="selector.bizModelName!=null">
+                    , bizModelName
+                </if>
         </trim>
-    </select>
-
-
-    <select id="queryList" parameterType="java.util.Map" resultType="Resource">
-        SELECT
+        </if>
+        <if test="selector==null">
         <include refid="Base_Column_List" />
-        FROM mubs_resource
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="id!=null">
-                AND id = #{id}
-            </if>
-            <if test="url!=null">
-                AND url = #{url}
-            </if>
-            <if test="orderNum!=null">
-                AND orderNum = #{orderNum}
-            </if>
-            <if test="parentId!=null">
-                AND parentId = #{parentId}
-            </if>
-            <if test="number!=null">
-                AND number = #{number}
-            </if>
-            <if test="longNumber!=null">
-                AND longNumber = #{longNumber}
-            </if>
-            <if test="name!=null">
-                AND name = #{name}
-            </if>
-            <if test="creator!=null">
-                AND creator = #{creator}
-            </if>
-            <if test="createDate!=null">
-                AND createDate = #{createDate}
-            </if>
-            <if test="lastModifier!=null">
-                AND lastModifier = #{lastModifier}
-            </if>
-            <if test="lastModDate!=null">
-                AND lastModDate = #{lastModDate}
-            </if>
-            <if test="description!=null">
-                AND description = #{description}
-            </if>
-            <if test="modelId!=null">
-                AND modelId = #{modelId}
-            </if>
-            <if test="bizModelName!=null">
-                AND bizModelName = #{bizModelName}
-            </if>
-        </trim>
-        ORDER BY ${orderBy} ${sortBy}
-    </select>
+        </if>
+                FROM mubs_resource
 
-    <select id="queryOne" parameterType="java.util.Map" resultType="Resource">
-        SELECT
-        <include refid="Base_Column_List" />
-        FROM mubs_resource
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="id!=null">
-                AND id = #{id}
-            </if>
-            <if test="url!=null">
-                AND url = #{url}
-            </if>
-            <if test="orderNum!=null">
-                AND orderNum = #{orderNum}
-            </if>
-            <if test="parentId!=null">
-                AND parentId = #{parentId}
-            </if>
-            <if test="number!=null">
-                AND number = #{number}
-            </if>
-            <if test="longNumber!=null">
-                AND longNumber = #{longNumber}
-            </if>
-            <if test="name!=null">
-                AND name = #{name}
-            </if>
-            <if test="creator!=null">
-                AND creator = #{creator}
-            </if>
-            <if test="createDate!=null">
-                AND createDate = #{createDate}
-            </if>
-            <if test="lastModifier!=null">
-                AND lastModifier = #{lastModifier}
-            </if>
-            <if test="lastModDate!=null">
-                AND lastModDate = #{lastModDate}
-            </if>
-            <if test="description!=null">
-                AND description = #{description}
-            </if>
-            <if test="modelId!=null">
-                AND modelId = #{modelId}
-            </if>
-            <if test="bizModelName!=null">
-                AND bizModelName = #{bizModelName}
-            </if>
-        </trim>
-        limit 0,1
-    </select>
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
 
-    <select id="count" resultType="java.lang.Integer">
+        <if test="sorter!=null" >
+        ORDER BY
+        <foreach collection="sorter" item="sort" separator="," >
+            ${sort.field} ${sort.order}</foreach>
+        </if>
+
+        <if test="offset != null">
+        limit ${offset}, ${rows}
+        </if>
+        </select>
+
+        <select id="count" resultType="java.lang.Integer">
         SELECT count(id) FROM mubs_resource
-    </select>
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
 
-    <select id="selectMaxId" resultType="java.lang.Integer">
-        SELECT
-        MAX(id)
-        FROM mubs_resource
-    </select>
+                <if test="condition.id.op!='in' and condition.id.op!='like' and condition.id.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.id.field}  ${condition.id.op} #{condition.id.data}
+                </if>
+                <if test="condition.id.op=='like'">
+                    AND id like CONCAT('%', #{condition.id.data} , '%')
+                </if>
+                <if test="condition.id.op=='leftlike'">
+                    AND id like CONCAT(#{condition.id.data} , '%')
+                </if>
+                <if test="condition.id.op=='in'">
+                    ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                    <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.url!=null">
 
+                <if test="condition.url.op!='in' and condition.url.op!='like' and condition.url.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.url.field}  ${condition.url.op} #{condition.url.data}
+                </if>
+                <if test="condition.url.op=='like'">
+                    AND url like CONCAT('%', #{condition.url.data} , '%')
+                </if>
+                <if test="condition.url.op=='leftlike'">
+                    AND url like CONCAT(#{condition.url.data} , '%')
+                </if>
+                <if test="condition.url.op=='in'">
+                    ${condition.groupOp}   ${condition.url.field}  ${condition.url.op}
+                    <foreach collection="condition.url.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.orderNum!=null">
+
+                <if test="condition.orderNum.op!='in' and condition.orderNum.op!='like' and condition.orderNum.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op} #{condition.orderNum.data}
+                </if>
+                <if test="condition.orderNum.op=='like'">
+                    AND orderNum like CONCAT('%', #{condition.orderNum.data} , '%')
+                </if>
+                <if test="condition.orderNum.op=='leftlike'">
+                    AND orderNum like CONCAT(#{condition.orderNum.data} , '%')
+                </if>
+                <if test="condition.orderNum.op=='in'">
+                    ${condition.groupOp}   ${condition.orderNum.field}  ${condition.orderNum.op}
+                    <foreach collection="condition.orderNum.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.parentId!=null">
+
+                <if test="condition.parentId.op!='in' and condition.parentId.op!='like' and condition.parentId.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op} #{condition.parentId.data}
+                </if>
+                <if test="condition.parentId.op=='like'">
+                    AND parentId like CONCAT('%', #{condition.parentId.data} , '%')
+                </if>
+                <if test="condition.parentId.op=='leftlike'">
+                    AND parentId like CONCAT(#{condition.parentId.data} , '%')
+                </if>
+                <if test="condition.parentId.op=='in'">
+                    ${condition.groupOp}   ${condition.parentId.field}  ${condition.parentId.op}
+                    <foreach collection="condition.parentId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.number!=null">
+
+                <if test="condition.number.op!='in' and condition.number.op!='like' and condition.number.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.number.field}  ${condition.number.op} #{condition.number.data}
+                </if>
+                <if test="condition.number.op=='like'">
+                    AND number like CONCAT('%', #{condition.number.data} , '%')
+                </if>
+                <if test="condition.number.op=='leftlike'">
+                    AND number like CONCAT(#{condition.number.data} , '%')
+                </if>
+                <if test="condition.number.op=='in'">
+                    ${condition.groupOp}   ${condition.number.field}  ${condition.number.op}
+                    <foreach collection="condition.number.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.longNumber!=null">
+
+                <if test="condition.longNumber.op!='in' and condition.longNumber.op!='like' and condition.longNumber.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op} #{condition.longNumber.data}
+                </if>
+                <if test="condition.longNumber.op=='like'">
+                    AND longNumber like CONCAT('%', #{condition.longNumber.data} , '%')
+                </if>
+                <if test="condition.longNumber.op=='leftlike'">
+                    AND longNumber like CONCAT(#{condition.longNumber.data} , '%')
+                </if>
+                <if test="condition.longNumber.op=='in'">
+                    ${condition.groupOp}   ${condition.longNumber.field}  ${condition.longNumber.op}
+                    <foreach collection="condition.longNumber.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.name!=null">
+
+                <if test="condition.name.op!='in' and condition.name.op!='like' and condition.name.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.name.field}  ${condition.name.op} #{condition.name.data}
+                </if>
+                <if test="condition.name.op=='like'">
+                    AND name like CONCAT('%', #{condition.name.data} , '%')
+                </if>
+                <if test="condition.name.op=='leftlike'">
+                    AND name like CONCAT(#{condition.name.data} , '%')
+                </if>
+                <if test="condition.name.op=='in'">
+                    ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}
+                    <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.creator!=null">
+
+                <if test="condition.creator.op!='in' and condition.creator.op!='like' and condition.creator.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op} #{condition.creator.data}
+                </if>
+                <if test="condition.creator.op=='like'">
+                    AND creator like CONCAT('%', #{condition.creator.data} , '%')
+                </if>
+                <if test="condition.creator.op=='leftlike'">
+                    AND creator like CONCAT(#{condition.creator.data} , '%')
+                </if>
+                <if test="condition.creator.op=='in'">
+                    ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}
+                    <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.createDate!=null">
+
+                <if test="condition.createDate.op!='in' and condition.createDate.op!='like' and condition.createDate.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op} #{condition.createDate.data}
+                </if>
+                <if test="condition.createDate.op=='like'">
+                    AND createDate like CONCAT('%', #{condition.createDate.data} , '%')
+                </if>
+                <if test="condition.createDate.op=='leftlike'">
+                    AND createDate like CONCAT(#{condition.createDate.data} , '%')
+                </if>
+                <if test="condition.createDate.op=='in'">
+                    ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}
+                    <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.lastModifier!=null">
+
+                <if test="condition.lastModifier.op!='in' and condition.lastModifier.op!='like' and condition.lastModifier.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op} #{condition.lastModifier.data}
+                </if>
+                <if test="condition.lastModifier.op=='like'">
+                    AND lastModifier like CONCAT('%', #{condition.lastModifier.data} , '%')
+                </if>
+                <if test="condition.lastModifier.op=='leftlike'">
+                    AND lastModifier like CONCAT(#{condition.lastModifier.data} , '%')
+                </if>
+                <if test="condition.lastModifier.op=='in'">
+                    ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}
+                    <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.lastModDate!=null">
+
+                <if test="condition.lastModDate.op!='in' and condition.lastModDate.op!='like' and condition.lastModDate.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op} #{condition.lastModDate.data}
+                </if>
+                <if test="condition.lastModDate.op=='like'">
+                    AND lastModDate like CONCAT('%', #{condition.lastModDate.data} , '%')
+                </if>
+                <if test="condition.lastModDate.op=='leftlike'">
+                    AND lastModDate like CONCAT(#{condition.lastModDate.data} , '%')
+                </if>
+                <if test="condition.lastModDate.op=='in'">
+                    ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}
+                    <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.description!=null">
+
+                <if test="condition.description.op!='in' and condition.description.op!='like' and condition.description.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.description.field}  ${condition.description.op} #{condition.description.data}
+                </if>
+                <if test="condition.description.op=='like'">
+                    AND description like CONCAT('%', #{condition.description.data} , '%')
+                </if>
+                <if test="condition.description.op=='leftlike'">
+                    AND description like CONCAT(#{condition.description.data} , '%')
+                </if>
+                <if test="condition.description.op=='in'">
+                    ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}
+                    <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.modelId!=null">
+
+                <if test="condition.modelId.op!='in' and condition.modelId.op!='like' and condition.modelId.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op} #{condition.modelId.data}
+                </if>
+                <if test="condition.modelId.op=='like'">
+                    AND modelId like CONCAT('%', #{condition.modelId.data} , '%')
+                </if>
+                <if test="condition.modelId.op=='leftlike'">
+                    AND modelId like CONCAT(#{condition.modelId.data} , '%')
+                </if>
+                <if test="condition.modelId.op=='in'">
+                    ${condition.groupOp}   ${condition.modelId.field}  ${condition.modelId.op}
+                    <foreach collection="condition.modelId.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.bizModelName!=null">
+
+                <if test="condition.bizModelName.op!='in' and condition.bizModelName.op!='like' and condition.bizModelName.op!='leftlike'">
+                    ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op} #{condition.bizModelName.data}
+                </if>
+                <if test="condition.bizModelName.op=='like'">
+                    AND bizModelName like CONCAT('%', #{condition.bizModelName.data} , '%')
+                </if>
+                <if test="condition.bizModelName.op=='leftlike'">
+                    AND bizModelName like CONCAT(#{condition.bizModelName.data} , '%')
+                </if>
+                <if test="condition.bizModelName.op=='in'">
+                    ${condition.groupOp}   ${condition.bizModelName.field}  ${condition.bizModelName.op}
+                    <foreach collection="condition.bizModelName.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+        </trim>
+        </select>
+
+        <select id="countByWhereSql" resultType="java.lang.Integer">
+        SELECT count(id) FROM mubs_resource
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+        </select>
+
+    <!-- 分页数据 end-->
+
+    <!-- 删除 start-->
+    <!-- 按Id删除 -->
+        <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM mubs_resource
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        </delete>
+
+
+        <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM mubs_resource
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="url!=null">
+                AND url = #{url}
+            </if>
+            <if test="orderNum!=null">
+                AND orderNum = #{orderNum}
+            </if>
+            <if test="parentId!=null">
+                AND parentId = #{parentId}
+            </if>
+            <if test="number!=null">
+                AND number = #{number}
+            </if>
+            <if test="longNumber!=null">
+                AND longNumber = #{longNumber}
+            </if>
+            <if test="name!=null">
+                AND name = #{name}
+            </if>
+            <if test="creator!=null">
+                AND creator = #{creator}
+            </if>
+            <if test="createDate!=null">
+                AND createDate = #{createDate}
+            </if>
+            <if test="lastModifier!=null">
+                AND lastModifier = #{lastModifier}
+            </if>
+            <if test="lastModDate!=null">
+                AND lastModDate = #{lastModDate}
+            </if>
+            <if test="description!=null">
+                AND description = #{description}
+            </if>
+            <if test="modelId!=null">
+                AND modelId = #{modelId}
+            </if>
+            <if test="bizModelName!=null">
+                AND bizModelName = #{bizModelName}
+            </if>
+        </trim>
+        </delete>
+
+        <delete id="deleteByWhereSql" parameterType="java.lang.String">
+        DELETE FROM mubs_resource
+        <if test="nativeSql!=null">
+${nativeSql}        </if>
+        <if test="nativeSql==null">
+            WHERE 1=2
+        </if>
+        </delete>
+
+        <delete id="deleteAll" >
+        DELETE FROM mubs_resource
+        </delete>
+
+
+    <!-- 删除 end-->
 </mapper>
 

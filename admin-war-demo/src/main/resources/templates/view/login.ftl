@@ -1,3 +1,4 @@
+<#assign path="../../../" />
 <!DOCTYPE html>
 <html lang="zh_cn">
 	<head>
@@ -276,7 +277,8 @@
 </script>
 
 <![endif]-->
-        <script src="../assets/js/ext/sha1.js"/>
+        <#--<script src="../assets/js/ext/sha1.js"/>-->
+        <script src="../assets/js/jquery.cookie.js"/>
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='../assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 		</script>
@@ -301,11 +303,13 @@
                  var data = 'j_username=' + encodeURIComponent($('#Username').val()) +
                          '&j_password=' + encodeURIComponent($('#Password').val()) +
                          '&remember-me=true&submit=Login';
+				 var csrfToken = $.cookie('CSRF-TOKEN');
 
-                 return $.ajax({url:'api/authentication' + data,
+                 return $.ajax({url:'api/authentication?' + data,
                      type: 'post',
                      headers: {
-                         'Content-Type': 'application/x-www-form-urlencoded'
+                         'Content-Type': 'application/x-www-form-urlencoded',
+						 'X-CSRF-TOKEN': csrfToken
                      },
                      success:function authSucess (response) {
                          var expiredAt = new Date();

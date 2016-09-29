@@ -1,17 +1,17 @@
 <!-- 左菜单 -->
 <ul class="nav nav-list">
     <!-- dyn item start -->
-<#assign pr = null />
+<#assign pr = "" />
 <#list resources as resource>
     <#if resource_index == 0>
         <#assign pr = "pr" /> <!-- 父节点标记 -->
     <li class="active">
-    <#elseif resource.parentId == null> <!-- 父节点 -->
+    <#elseif resource.parentId == 0> <!-- 父节点 -->
         <#assign pr = "pr" /> <!-- 父节点标记 -->
     </ul>
     <li class="">
     <#else>
-        <#assign pr = null /> <!-- 非父节点标记 -->
+        <#assign pr = "" /> <!-- 非父节点标记 -->
     </#if>
 
     <#if pr == "pr">

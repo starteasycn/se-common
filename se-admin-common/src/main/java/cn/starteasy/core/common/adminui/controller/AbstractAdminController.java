@@ -1,11 +1,14 @@
 package cn.starteasy.core.common.adminui.controller;
 
+import cn.starteasy.core.common.adminui.backend.domain.AdminUser;
 import cn.starteasy.core.common.adminui.backend.domain.Resource;
 import cn.starteasy.core.common.adminui.backend.domain.ResourceGrid;
 import cn.starteasy.core.common.adminui.backend.service.IResourceGridService;
 import cn.starteasy.core.common.adminui.controller.helpers.ActionPermHelper;
+import cn.starteasy.core.common.domain.persistent.SearchEnum;
 import cn.starteasy.core.common.domain.persistent.Sorter;
 import cn.starteasy.core.common.domain.persistent.SqlOrderEnum;
+import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
 import cn.starteasy.core.common.domain.view.BizData4Page;
 import cn.starteasy.core.common.service.IPageService;
 import cn.starteasy.core.common.service.admin.IDataPermService;
@@ -14,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,8 +89,8 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         mav.addObject("resources", resourceList);
 
 //        List<ResourceGrid> resourceGridList = resourceGridService.findAll();
-        Map<String, Object> condition = Maps.newHashMap();
-        condition.put("moduleName",getMainObjName());
+        Map<String, Object> condition = ConditionBuilder.condition("moduleName", SearchEnum.eq, getMainObjName());//Maps.newHashMap();
+        //condition.put("moduleName",getMainObjName());
         //屏蔽掉不显示的列
         //condition.put("hide","0");
 
@@ -102,7 +106,9 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         mav.addObject("title", getViewTitle());
 
         // 当前用户
-        mav.addObject("current_userName", UserContext.getCurrentUser().getName());
+
+        String userName = ((AdminUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getName();
+        mav.addObject("current_userName", userName);//UserContext.getCurrentUser().getName());
 
         //按钮功能权限处理
         mav.addObject("actions", actionPermHelper.getActionPerm(getMainObjName(),getAbsroduct()));

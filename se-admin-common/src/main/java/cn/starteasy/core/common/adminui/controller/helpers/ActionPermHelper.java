@@ -4,6 +4,8 @@ package cn.starteasy.core.common.adminui.controller.helpers;
 import cn.starteasy.core.common.adminui.backend.domain.Resource;
 import cn.starteasy.core.common.adminui.backend.service.IActionPermService;
 import cn.starteasy.core.common.adminui.backend.service.IResourceService;
+import cn.starteasy.core.common.domain.persistent.SearchEnum;
+import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
 import cn.starteasy.core.common.utils.UserContext;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +42,9 @@ public class ActionPermHelper {
     }
 
     public final Set<String> getActionPerm(String mainObj, String product) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("bizModelName", mainObj);
-        map.put("product", product);
-        Resource resource = resourceService.viewOne(null, map, Lists.newArrayList());
+        Map<String,Object> map = new ConditionBuilder().and("bizModelName", SearchEnum.eq, mainObj).and("product", SearchEnum.eq, product).build();
+
+        Resource resource = resourceService.viewOne(null, map, null);
         if(resource==null)
             return null;
         return actionPermService.getActionPermsByRes(UserContext.getCurrentUser().getId(),resource.getId());
@@ -56,7 +57,7 @@ public class ActionPermHelper {
 
     public final List<Resource> getResourcePerm(String product) {
         //return getResourcePerm(UserContext.getCurrentUser().getId(), product,"0");
-        return getResourcePerm(0, product,"0");
+        return getResourcePerm(UserContext.getCurrentUser().getId(), product,"0");
     }
 
     public final List<Resource> getResourcePerm(Object uid, String product) {

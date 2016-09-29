@@ -2,6 +2,8 @@ package cn.starteasy.security;
 
 import cn.starteasy.core.common.adminui.backend.dao.IAdminUserDAO;
 import cn.starteasy.core.common.adminui.backend.domain.AdminUser;
+import cn.starteasy.core.common.domain.persistent.SearchEnum;
+import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -36,8 +38,8 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(final String login) {
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        Map<String, Object> condition = Maps.newHashMap();
-        condition.put("", lowercaseLogin);
+
+        Map<String, Object> condition = ConditionBuilder.condition("login", SearchEnum.eq, lowercaseLogin);
         AdminUser userFromDatabase = adminUserDAO.queryOne(null, condition, null);//.findOneByLogin(lowercaseLogin);
         Optional<AdminUser> adminUserOptional = Optional.of(userFromDatabase);
         return adminUserOptional.map(user -> {
@@ -49,9 +51,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 //                    user.getAuthorities().stream()
 //                    .map(authority -> new SimpleGrantedAuthority(authority.getName()))
 //                .collect(Collectors.toList());
-            return new org.springframework.security.core.userdetails.User(lowercaseLogin,
-                user.getPassword(),
-                grantedAuthorities);
+            return userFromDatabase;
         }).orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +
         "database"));
     }

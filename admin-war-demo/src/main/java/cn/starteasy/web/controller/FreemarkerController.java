@@ -29,7 +29,7 @@ public class FreemarkerController {
     public String index(Map<String,Object> model){
         model.put("time",new Date());
         model.put("message", "only test");
-        return "view/index";//返回的内容就是templetes下面文件的名称
+        return "index";//返回的内容就是templetes下面文件的名称
     }
 
     @RequestMapping("/show/error")

@@ -2,6 +2,7 @@ package cn.starteasy.core.common.utils;
 
 
 import cn.starteasy.core.common.domain.UserDomain;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * 用户上下文
@@ -17,7 +18,7 @@ public class UserContext {
     private static ThreadLocal<UserDomain> context = new ThreadLocal<UserDomain>();
 
     public static UserDomain getCurrentUser(){
-       return context.get();
+       return  (UserDomain)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static void setCurrentUser(UserDomain user){
