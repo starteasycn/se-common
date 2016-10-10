@@ -1,6 +1,6 @@
 package cn.starteasy.cloud.demo;
 
-import cn.starteasy.JhipsterGradleSampleApplicationApp;
+import cn.starteasy.AdminSampleApplicationApp;
 import cn.starteasy.core.common.adminui.backend.dao.IAdminUserDAO;
 import cn.starteasy.core.common.adminui.backend.domain.AdminUser;
 import cn.starteasy.core.common.domain.persistent.SearchEnum;
@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ import static org.junit.Assert.*;
  * @since v0.0.1
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = JhipsterGradleSampleApplicationApp.class)
+@SpringBootTest(classes = AdminSampleApplicationApp.class)
 @Transactional
 public class CRUDTest {
 

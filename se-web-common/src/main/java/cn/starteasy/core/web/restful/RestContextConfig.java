@@ -10,6 +10,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 //import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -23,6 +24,12 @@ import java.util.List;
 //@EnableWebMvc
 @Configuration
 public class RestContextConfig extends WebMvcConfigurerAdapter {
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        super.configureMessageConverters(converters);
+        converters.add(new ExtFastJsonHttpMessageConverter<Object>());
+    }
+
     @Override
     public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
         resolvers.add( exceptionHandlerExceptionResolver() ); // resolves @ExceptionHandler
