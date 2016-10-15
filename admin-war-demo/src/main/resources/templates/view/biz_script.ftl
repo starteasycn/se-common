@@ -13,10 +13,6 @@
 <script src="../../assets/js/biz/biz-common.js"></script>
 <script>
 
-    <#if actions?exists>
-        alert(1);
-    </#if>
-
     $(document).ready(function () {
         $.jgrid.defaults.styleUI = "Bootstrap";
         var grid_selector = "#grid-table";
