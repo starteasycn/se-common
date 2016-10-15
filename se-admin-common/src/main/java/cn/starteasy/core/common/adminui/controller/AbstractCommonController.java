@@ -1,11 +1,9 @@
 package cn.starteasy.core.common.adminui.controller;
 
+import cn.starteasy.core.common.adminui.backend.domain.Resource;
 import cn.starteasy.core.common.adminui.backend.domain.ResourceGrid;
 import cn.starteasy.core.common.adminui.backend.service.IResourceGridService;
-import cn.starteasy.core.common.adminui.controller.helpers.ActionPermHelper;
-import cn.starteasy.core.common.adminui.controller.helpers.BasePersistenceProviderMaps;
-import cn.starteasy.core.common.adminui.controller.helpers.BaseServiceMaps;
-import cn.starteasy.core.common.adminui.controller.helpers.ValidatorUtil;
+import cn.starteasy.core.common.adminui.controller.helpers.*;
 import cn.starteasy.core.common.domain.BaseDomain;
 import cn.starteasy.core.common.domain.BizStatusEnum;
 import cn.starteasy.core.common.domain.persistent.SqlOrderEnum;
@@ -23,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +45,8 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
     private final static String OPER = "oper";
 
+    private static final String INDEX = "index";
+
     protected HttpServletRequest request;
 
     protected HttpServletResponse response;
@@ -61,6 +62,29 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
                              HttpServletResponse response) {
         this.request = request;
         this.response = response;
+    }
+
+    /**
+     * 对应地址为/admin/${model}/index
+     * 获取首页功能菜单
+     * @return
+     */
+    @RequestMapping(value="/index")
+    public ModelAndView doMenu(){
+        return doIndexView(request,response);
+    }
+    /**
+     * 获取首页必备组件
+     * @param request
+     * @param response
+     * @return
+     */
+    protected ModelAndView doIndexView(HttpServletRequest request, HttpServletResponse response){
+        ModelAndView mav=new ModelAndView(INDEX);
+        List<Resource> resourceList = actionPermHelper.getResourcePerm(INDEX);
+        mav.addObject("resources", MenuUtils.getTreeMenu(resourceList));
+        mav.addObject("resources2", "test");
+        return mav;
     }
 
     @RequestMapping(value="/commonsave/{mainObj}")
@@ -441,7 +465,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
     }
 
-    protected abstract IBaseService getExportService();
+//    protected abstract IBaseService getExportService();
 
     /**
      * 获取泛型类泛型

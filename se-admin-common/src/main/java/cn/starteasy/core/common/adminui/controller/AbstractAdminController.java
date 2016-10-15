@@ -85,6 +85,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         	        移除元素: map.remove("1");
         	        清空: map.clear();*/
         enhancePreModelAndView(request, mav);
+        //这里不再给每个页面注入用户功能菜单
         List<Resource> resourceList = actionPermHelper.getResourcePerm(getAbsroduct());
         mav.addObject("resources", resourceList);
 
